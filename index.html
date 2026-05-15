@@ -416,7 +416,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
         <div class="layer-tag"><span class="layer-dot" style="background:var(--purple)"></span>LAYER 2 — LLM INFERENCE / HARDENED OUTBOUND</div>
         <h3 class="layer-title">ZDR inference <span class="layer-slash">/</span> four controls</h3>
         <p class="layer-body">Receives the CCI and stress-test results from Layer 0. Generates plain-language narrative explaining what moved and why, and outputs standard hedging category guidance. The only outbound data channel in the system. Four controls harden it.</p>
-        <div class="stack-list"><div class="stack-item purple">Zero Data Retention · ZDR</div><div class="stack-item">Control 1: vector bucketing (5% rounding)</div><div class="stack-item">Control 2: ZDR provider agreement</div><div class="stack-item">Control 3: no covenant terms transmitted</div><div class="stack-item">Control 4: QMRE proxy · salted hash only</div><div class="stack-item">Sonnet · GPT-4o · Llama 3 (local)</div></div>
+        <div class="stack-list"><div class="stack-item purple">Zero Data Retention · ZDR</div><div class="stack-item">Control 1: vector bucketing (5% rounding)</div><div class="stack-item">Control 2: ZDR provider agreement</div><div class="stack-item">Control 3: no covenant terms transmitted</div><div class="stack-item">Control 4: QMRE proxy · salted hash only</div><div class="stack-item">Sonnet 4.6 · GPT-5.5 · Llama 4 Scout (local)</div></div>
       </div>
 
       <div class="arch-layer" style="border-top:1px solid var(--border);">
@@ -461,25 +461,25 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   <div class="section-inner">
     <p class="section-eyebrow">Choose your inference model</p>
     <h2 class="section-headline">Same architecture.<br>Your choice of intelligence.</h2>
-    <p class="section-sub">The deterministic ledger never changes. Select the LLM that generates your plain-language narrative. All options operate under Zero Data Retention. Available on all tiers.</p>
+    <p class="section-sub">The deterministic ledger never changes. Select the LLM that generates your plain-language narrative. All options operate under Zero Data Retention.</p>
     <div class="llm-grid" id="llm-grid">
       <div class="llm-card active" onclick="selectLLM(this,'sonnet')">
         <div class="llm-model-tag">Anthropic · Cloud</div>
-        <div class="llm-model-name">Claude Sonnet</div>
+        <div class="llm-model-name">Claude Sonnet 4.6</div>
         <p class="llm-model-desc">Optimised for nuanced economic reasoning and structured hedge guidance. Recommended for clients wanting detailed regime-change analysis.</p>
-        <div class="llm-tags"><span class="llm-tag">ZDR agreement</span><span class="llm-tag">Nuanced reasoning</span><span class="llm-tag">~$0.011/report</span></div>
+        <div class="llm-tags"><span class="llm-tag">ZDR agreement</span><span class="llm-tag">Nuanced reasoning</span><span class="llm-tag">~$0.011/report</span><span class="llm-tag" style="background:rgba(255,255,255,0.06);color:var(--text2);">All tiers · Default</span></div>
       </div>
       <div class="llm-card" onclick="selectLLM(this,'gpt4o')" style="border-left:2px solid transparent;">
         <div class="llm-model-tag">OpenAI · Cloud</div>
-        <div class="llm-model-name">GPT-4o</div>
-        <p class="llm-model-desc">Broad cross-referencing across data sources. Strong at synthesising multiple macro signals into a single coherent operational narrative.</p>
-        <div class="llm-tags"><span class="llm-tag">ZDR agreement</span><span class="llm-tag">Cross-referencing</span><span class="llm-tag">~$0.014/report</span></div>
+        <div class="llm-model-name">GPT-5.5</div>
+        <p class="llm-model-desc">OpenAI's flagship model, released April 2026. Strong at synthesising multiple macro signals into a coherent operational narrative, with native multi-step reasoning and tool use.</p>
+        <div class="llm-tags"><span class="llm-tag">ZDR agreement</span><span class="llm-tag">Frontier reasoning</span><span class="llm-tag">~$0.030/report</span><span class="llm-tag" style="background:rgba(124,58,237,0.15);color:#a78bfa;">Pro $499+ only</span></div>
       </div>
       <div class="llm-card" onclick="selectLLM(this,'llama')" style="border-left:2px solid transparent;">
         <div class="llm-model-tag">Meta · Local device</div>
-        <div class="llm-model-name">Llama 3 (local)</div>
-        <p class="llm-model-desc">Zero data exfiltration. Runs entirely on-device. No API call, no proxy, no ZDR agreement needed — the vector never leaves the machine.</p>
-        <div class="llm-tags"><span class="llm-tag">Zero exfiltration</span><span class="llm-tag">On-device only</span><span class="llm-tag">No per-report cost</span></div>
+        <div class="llm-model-name">Llama 4 Scout</div>
+        <p class="llm-model-desc">Zero data exfiltration. Runs entirely on-device using Mixture-of-Experts architecture, with a 10M context window. No API call, no proxy, no ZDR agreement needed — the vector never leaves the machine.</p>
+        <div class="llm-tags"><span class="llm-tag">Zero exfiltration</span><span class="llm-tag">On-device only</span><span class="llm-tag">No per-report cost</span><span class="llm-tag" style="background:rgba(255,255,255,0.06);color:var(--text2);">All tiers</span></div>
       </div>
     </div>
 
@@ -543,8 +543,9 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-top:none;padding:26px;display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;">
       <div style="flex:1;min-width:240px;">
-        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">CYBER SECURITY PARTNER</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Symbiotic Security</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">SECURITY VERIFICATION</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Independent security audit</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;">Third-party security services verify that no sensitive data can egress the local environment — auditing all LLM-assisted code paths and API boundaries for potential data-leaking vulnerabilities before deployment.</p>
       </div>
       <div style="flex:1;min-width:240px;">
         <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">REGULATORY ALIGNMENT</div>
@@ -567,7 +568,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
     <div class="ticker-item"><span class="ticker-item-cat">Signals</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Kalshi</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Signals</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">CBOE VIX</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Data</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">BLS / EIA</span></div>
-    <div class="ticker-item"><span class="ticker-item-cat">Cyber</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Symbiotic Security</span></div>
+    <div class="ticker-item"><span class="ticker-item-cat">Security</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Independent audit</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Execution</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">JPMorgan Chase</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Execution</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Fidelity Investments</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Banking</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Mercury</span></div>
@@ -579,7 +580,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
     <div class="ticker-item"><span class="ticker-item-cat">Signals</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Kalshi</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Signals</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">CBOE VIX</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Data</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">BLS / EIA</span></div>
-    <div class="ticker-item"><span class="ticker-item-cat">Cyber</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Symbiotic Security</span></div>
+    <div class="ticker-item"><span class="ticker-item-cat">Security</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">Independent audit</span></div>
     <div class="ticker-item"><span class="ticker-item-cat">Execution</span><span style="color:var(--text3);font-size:10px;">·</span><span class="ticker-item-name">JPMorgan Chase</span></div>
   </div>
 </div>
@@ -587,12 +588,12 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 <!-- PARTNERS -->
 <section id="partners" style="border-top:none;padding-top:72px;">
   <div class="section-inner">
-    <p class="section-eyebrow">Ecosystem partners</p>
+    <p class="section-eyebrow">Execution platforms</p>
     <h2 class="section-headline">Where your hedge options live.</h2>
     <p class="section-sub"></p>
     <div class="partners-grid">
       <div class="partners-col">
-        <div class="partners-col-title">Hedging execution partners</div>
+        <div class="partners-col-title">Hedging execution platforms</div>
         <div class="partner-entry">
           <div class="partner-name">Fidelity Investments</div>
           <div class="partner-role">Treasury management · sector ETFs</div>
@@ -646,6 +647,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
           <li>10 LLM narrative reports/month</li>
           <li>Local Engine</li>
           <li>Covenant monitor</li>
+          <li>Sonnet 4.6 · Llama 4 Scout</li>
           <li>Support team access · daily</li>
         </ul>
       </div>
@@ -658,6 +660,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
           <li>30 LLM narrative reports/month</li>
           <li>Local Engine</li>
           <li>Covenant monitor + alerts</li>
+          <li>Sonnet 4.6 · Llama 4 Scout · GPT-5.5</li>
           <li>Layer 3 AI alpha <span class="pricing-badge badge-soon">In testing</span></li>
           <li>Support team access · daily</li>
         </ul>
@@ -671,13 +674,15 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
           <li>Unlimited reports + SLA</li>
           <li>Local Engine</li>
           <li>Covenant monitor + alerts</li>
+          <li>Sonnet 4.6 · Llama 4 Scout · GPT-5.5</li>
+          <li>Custom model pinning · on-prem · org-wide defaults</li>
           <li>Layer 3 AI alpha <span class="pricing-badge badge-soon">In testing</span></li>
           <li>Dedicated onboarding</li>
           <li>Support team access · 24/7</li>
         </ul>
       </div>
     </div>
-    <p style="margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.09em;">Report overages · $2.50–$4.00/report · ~$0.011/report inference (Sonnet) · ~$0.003 (Haiku with caching)</p>
+    <p style="margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.09em;">Report overages · $2.50–$4.00/report · ~$0.011/report (Sonnet 4.6) · ~$0.030/report (GPT-5.5) · $0.00 (Llama 4 Scout, on-device)</p>
   </div>
 </section>
 
@@ -690,6 +695,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       <p class="section-sub" style="margin-top:14px;">QMRE is a small team working on a hard problem at the intersection of quantitative finance, local-first architecture, and leveraging AI at its full scale. If that sounds like the right place for you to grow, we want to hear from you.</p>
     </div>
     <div class="careers-positions">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.14em;padding:10px 20px;background:var(--bg2);border-bottom:1px solid var(--border);">Roles opening after Series Seed</div>
       <div class="career-row"><span class="career-title">Quantitative engineer</span><span class="career-loc">San Francisco · Full-time</span></div>
       <div class="career-row"><span class="career-title">AI / ML engineer</span><span class="career-loc">San Francisco · Full-time</span></div>
       <div class="career-row"><span class="career-title">Account executive</span><span class="career-loc">San Francisco · Full-time</span></div>
