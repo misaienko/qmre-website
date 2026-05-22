@@ -285,7 +285,6 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       <span class="nav-brand-sub">Quantitative Macro-Risk Engine</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#architecture">Architecture</a></li>
       <li><a href="#about">About QMRE</a></li>
       <li><a href="#privacy">Privacy &amp; Safety</a></li>
       <li><a href="#pricing">Available Tiers</a></li>
@@ -376,12 +375,9 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   </div>
 </section>
 
-<!-- ARCHITECTURE -->
-<section id="architecture">
+<!-- ARCHITECTURE REMOVED -->
+<section id="architecture" style="display:none">
   <div class="section-inner">
-    <p class="section-eyebrow">Architecture</p>
-    <h2 class="section-headline">Market data comes to your infrastructure, never the reverse.</h2>
-    <p class="section-sub"></p>
     <div class="arch-layers">
 
       <div class="arch-layer span2">
@@ -456,36 +452,12 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   </div>
 </section>
 
-<!-- LLM SELECTOR -->
-<section id="llm-selector">
-  <div class="section-inner">
-    <p class="section-eyebrow">Choose your inference model</p>
-    <h2 class="section-headline">Same architecture.<br>Your choice of intelligence.</h2>
-    <p class="section-sub">The deterministic ledger never changes. Select the LLM that generates your plain-language narrative. All options operate under Zero Data Retention.</p>
-    <div class="llm-grid" id="llm-grid">
+<!-- LLM SELECTOR REMOVED -->
       <div class="llm-card active" onclick="selectLLM(this,'sonnet')">
         <div class="llm-model-tag">Anthropic · Cloud</div>
         <div class="llm-model-name">Claude Sonnet 4.6</div>
         <p class="llm-model-desc">Optimised for nuanced economic reasoning and structured hedge guidance. Recommended for clients wanting detailed regime-change analysis.</p>
-        <div class="llm-tags"><span class="llm-tag">ZDR agreement</span><span class="llm-tag">Nuanced reasoning</span><span class="llm-tag">~$0.011/report</span><span class="llm-tag" style="background:rgba(255,255,255,0.06);color:var(--text2);">All tiers · Default</span></div>
-      </div>
-      <div class="llm-card" onclick="selectLLM(this,'gpt4o')" style="border-left:2px solid transparent;">
-        <div class="llm-model-tag">OpenAI · Cloud</div>
-        <div class="llm-model-name">GPT-5.5</div>
-        <p class="llm-model-desc">OpenAI's flagship model, released April 2026. Strong at synthesising multiple macro signals into a coherent operational narrative, with native multi-step reasoning and tool use.</p>
-        <div class="llm-tags"><span class="llm-tag">ZDR agreement</span><span class="llm-tag">Frontier reasoning</span><span class="llm-tag">~$0.030/report</span><span class="llm-tag" style="background:rgba(124,58,237,0.15);color:#a78bfa;">Pro $499+ only</span></div>
-      </div>
-      <div class="llm-card" onclick="selectLLM(this,'llama')" style="border-left:2px solid transparent;">
-        <div class="llm-model-tag">Meta · Local device</div>
-        <div class="llm-model-name">Llama 4 Scout</div>
-        <p class="llm-model-desc">Zero data exfiltration. Runs entirely on-device using Mixture-of-Experts architecture, with a 10M context window. No API call, no proxy, no ZDR agreement needed — the vector never leaves the machine.</p>
-        <div class="llm-tags"><span class="llm-tag">Zero exfiltration</span><span class="llm-tag">On-device only</span><span class="llm-tag">No per-report cost</span><span class="llm-tag" style="background:rgba(255,255,255,0.06);color:var(--text2);">All tiers</span></div>
-      </div>
-    </div>
 
-
-  </div>
-</section>
 
 <!-- EMPOWERMENT TOOL -->
 <section id="about">
@@ -757,8 +729,8 @@ function submitModal(){
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       service_id:'service_qmre',
-      template_id:'template_xu80664',
-      user_id:'RHQb-HOLDVZiQoiRq',
+      template_id:'template_signup',
+      user_id:'YOUR_EMAILJS_PUBLIC_KEY',
       template_params:{to_email:'isssmaryna@gmail.com',user_email:e,user_phone:phone||'not provided'}
     })
   }).catch(()=>{});
