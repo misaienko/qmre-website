@@ -322,7 +322,14 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
           <span class="cci-row-label">Est. expenditure increase</span>
           <span class="cci-row-value val-red" style="font-size:16px;" id="exp-val">+$184k</span>
         </div>
-        <span class="cci-row-detail">↳ annualised impact on current cost basket</span>
+        <span class="cci-row-detail">↳ est. monthly impact on current cost basket</span>
+      </div>
+      <div class="cci-row">
+        <div class="cci-row-top">
+          <span class="cci-row-label">Est. weekly exposure</span>
+          <span class="cci-row-value val-red" style="font-size:16px;" id="exp-week-val">+$3.5k</span>
+        </div>
+        <span class="cci-row-detail">↳ weekly burn rate impact at current trajectory</span>
       </div>
       <div class="cci-row">
         <div class="cci-row-top">
@@ -484,7 +491,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   <div class="section-inner">
     <p class="section-eyebrow">Financial empowerment tool</p>
     <h2 class="section-headline">Macro risk infrastructure<br>built for operators, not banks.</h2>
-    <p class="section-sub">For finance teams at Series A/B companies and small enterprises with real input cost exposure to macro moves.</p>
+    <p class="section-sub">For finance teams at Series A/B companies and enterprises with real input cost exposure to macro moves.</p>
     <div class="gaps-grid">
       <div class="gap-card">
         <div class="gap-title">Cost gap</div>
@@ -492,18 +499,18 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       </div>
       <div class="gap-card" style="border-top:1px solid var(--border);">
         <div class="gap-title">Independence gap</div>
-        <p class="gap-body">Monitor your financial state locally — platform-agnostic and borrower-side. QMRE delivers systematic hedge guidance to offset cost exposure from macro moves. Your finance team selects the execution path; QMRE surfaces the decision context.</p>
+        <p class="gap-body">Monitor your financial state locally — platform-agnostic and borrower-side. Your finance team selects the execution path; QMRE surfaces the decision context.</p>
         <div class="instrument-list">
           <span class="instrument-pill">Sector ETFs</span><span class="instrument-pill">FX forwards</span><span class="instrument-pill">Rate instruments</span><span class="instrument-pill">Yield-bearing stablecoins</span><span class="instrument-pill">Tokenised treasury funds</span>
         </div>
       </div>
       <div class="gap-card" style="border-top:1px solid var(--border);">
         <div class="gap-title">Precision gap</div>
-        <p class="gap-body">Generic CPI benchmarks don't reflect your actual cost basket. A robotics company's inflation is not a SaaS company's inflation. Your Personalised Inflation Index (PII) is built on your data — compute, hardware, logistics, talent — allowing a materially more precise hedge.</p>
+        <p class="gap-body">Generic CPI benchmarks don't reflect your actual cost basket. Your prebuilt Personalised Inflation Index (PII) allows a materially more precise hedge.</p>
       </div>
       <div class="gap-card" style="border-top:1px solid var(--border);">
         <div class="gap-title">Sovereignty gap</div>
-        <p class="gap-body">Sensitive financial cost data cannot safely go into public AI systems. QMRE runs a fine-tuned open-weight model locally — a captive, domain-specific environment. Raw transaction data never leaves the device. Privacy is a set of specific technical decisions, not a claim.</p>
+        <p class="gap-body">Sensitive financial cost data cannot safely go into public AI systems. Your data stays on your device.</p>
       </div>
     </div>
   </div>
@@ -514,30 +521,29 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   <div class="section-inner">
     <p class="section-eyebrow">Privacy &amp; Safety</p>
     <h2 class="section-headline">Privacy is not a claim.<br>It is a set of specific technical decisions.</h2>
-    <p class="section-sub">Sensitive financial cost data cannot safely go into public AI systems. QMRE is architected so customer data never leaves the device — at any layer.</p>
-    <div class="privacy-grid">
+    <p class="section-sub"></p>
+    <div class="privacy-grid" style="grid-template-columns:1fr 1fr 1fr;">
       <div class="privacy-card">
         <div class="privacy-num">CONTROL 01</div>
-        <div class="privacy-title">Vector bucketing</div>
+        <div class="privacy-title">Local computation</div>
+        <p class="privacy-body">All deterministic math and cost basket analysis runs on-device. No raw financial data crosses any boundary.</p>
       </div>
       <div class="privacy-card" style="border-left:1px solid var(--border);">
         <div class="privacy-num">CONTROL 02</div>
         <div class="privacy-title">Zero Data Retention</div>
+        <p class="privacy-body">Any cloud inference operates under ZDR agreements — inputs are not stored or used for training.</p>
       </div>
       <div class="privacy-card" style="border-left:1px solid var(--border);">
         <div class="privacy-num">CONTROL 03</div>
-        <div class="privacy-title">No covenant terms in transmission</div>
-      </div>
-      <div class="privacy-card" style="border-left:1px solid var(--border);">
-        <div class="privacy-num">CONTROL 04</div>
-        <div class="privacy-title">QMRE proxy router</div>
+        <div class="privacy-title">Jurisdictional alignment</div>
+        <p class="privacy-body">Deployment customised to each client's regulatory framework. QMRE adapts to local governance requirements.</p>
       </div>
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-top:none;padding:26px;display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;">
       <div style="flex:1;min-width:240px;">
         <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">AI MODEL ARCHITECTURE</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Mistral local · Claude ZDR · separated by design</div>
-        <p style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;">Narrative generation runs on Mistral Large 3 locally on the client device — no data egress. Claude API handles advanced reasoning on Pro/Enterprise with Zero Data Retention enforced. For the signal layer, Claude processes only public market data; the probability vector it outputs is passed to local Mistral for cost basket mapping. Customer data never touches any external model.</p>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Claude ZDR · signal layer only · one-way to device</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;">Claude handles the predictive signal layer — processing only public market data and passing a probability vector one-way to the local Mistral model. It never touches client data. All cost basket mapping and narrative generation runs locally on your device.</p>
       </div>
       <div style="flex:1;min-width:240px;">
         <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">SECURITY VERIFICATION</div>
@@ -633,7 +639,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   <div class="section-inner">
     <p class="section-eyebrow">Available tiers</p>
     <h2 class="section-headline">Two billable layers:<br>platform plus metered reports.</h2>
-    <div class="pricing-grid">
+    <div class="pricing-grid" style="grid-template-columns:1fr 1fr;">
       <div class="pricing-card">
         <div class="pricing-tier">Base</div>
         <div class="pricing-amount">$199</div>
@@ -657,7 +663,6 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
           <li>Local Engine</li>
           <li>Covenant monitor + alerts</li>
           <li>Mistral Large 3 · local + cloud inference</li>
-          <li>Custom model pinning · on-prem · org-wide defaults</li>
           <li>Layer 3 AI alpha <span class="pricing-badge badge-soon">In testing</span></li>
           <li>Dedicated onboarding</li>
           <li>Support team access · 24/7</li>
@@ -771,12 +776,13 @@ function highlightCareers(){
 
 // ── CCI TICKER ──
 let cciBase=104.8;
-let expBase=184;
+let expBase=15.4;
 setInterval(()=>{
   cciBase+=(Math.random()-.5)*.25;
-  expBase+=(Math.random()-.5)*2;
+  expBase+=(Math.random()-.5)*.15;
   document.getElementById('cci-val').textContent=cciBase.toFixed(1);
-  if(document.getElementById('exp-val')) document.getElementById('exp-val').textContent='+$'+Math.round(expBase)+'k';
+  if(document.getElementById('exp-val')) document.getElementById('exp-val').textContent='+$'+expBase.toFixed(1)+'k';
+  if(document.getElementById('exp-week-val')) document.getElementById('exp-week-val').textContent='+$'+(expBase/4.3).toFixed(1)+'k';
 },2400);
 
 // ── COST EXPOSURE CHART ──
