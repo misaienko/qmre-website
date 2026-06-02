@@ -722,7 +722,7 @@
 <!-- HEADER -->
 <header class="header">
   <div class="logo">QMRE</div>
-  <div class="header-step" id="header-step">STEP 1 OF 5</div>
+  <div class="header-step" id="header-step">STEP 1 OF 4</div>
 </header>
 
 <!-- PROGRESS -->
@@ -753,19 +753,12 @@
       <div class="sidebar-step" data-step="3">
         <div class="step-dot">3</div>
         <div>
-          <div class="step-label">Exposure flags</div>
-          <div class="step-sublabel">SIGNALS</div>
-        </div>
-      </div>
-      <div class="sidebar-step" data-step="4">
-        <div class="step-dot">4</div>
-        <div>
-          <div class="step-label">Runway context</div>
-          <div class="step-sublabel">OPTIONAL</div>
+          <div class="step-label">Commitments</div>
+          <div class="step-sublabel">FLAGS & TIMELINE</div>
         </div>
       </div>
       <div class="sidebar-step" data-step="5">
-        <div class="step-dot">5</div>
+        <div class="step-dot">4</div>
         <div>
           <div class="step-label">Alert preferences</div>
           <div class="step-sublabel">ALERTS</div>
@@ -951,7 +944,7 @@
     <div class="step-panel" id="step-3">
       <div class="step-eyebrow">STEP 03 — ADDITIONAL FLAGS</div>
       <h2 class="step-headline">What commitments<br>shape your risk?</h2>
-      <p class="step-sub" style="color:var(--text3);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">Calibrating your position…</p>
+      <p class="step-sub" style="color:var(--text3);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;">Calibrating your position… · Track your runway daily</p>
 
       <div class="toggle-cards">
 
@@ -1032,48 +1025,36 @@
           </div>
         </div>
 
+        <!-- Runway: months of cash -->
+        <div class="toggle-card" style="cursor:default;">
+          <div class="toggle-card-text" style="flex:1;">
+            <div class="toggle-card-q">Track your runway daily <span class="optional-badge" style="vertical-align:middle;">OPTIONAL</span></div>
+            <div class="toggle-card-why">→ Every alert tells you exactly how many days a macro shock removes</div>
+            <div style="display:flex;align-items:center;gap:0;margin-top:12px;
+              border:1px solid var(--border2);width:220px;" onclick="event.stopPropagation()">
+              <span style="background:var(--bg3);padding:10px 14px;font-family:var(--mono);
+                font-size:12px;color:var(--text3);border-right:1px solid var(--border2);
+                white-space:nowrap;">months</span>
+              <input type="number" id="months-cash" placeholder="e.g. 18"
+                style="background:var(--bg2);border:none;color:var(--text1);
+                font-family:var(--sans);font-size:14px;padding:10px 14px;
+                outline:none;width:100%;">
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="nav-row">
         <button class="btn-back" onclick="goTo(2)">← Back</button>
-        <button class="btn-next" onclick="goTo(4)">
+        <button class="btn-next" onclick="goTo(5)">
           Next
           <svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
     </div>
 
-    <!-- ── STEP 4: RUNWAY CONTEXT ── -->
-    <div class="step-panel" id="step-4">
-      <div class="step-eyebrow">STEP 04 — RUNWAY CONTEXT <span class="optional-badge">OPTIONAL</span></div>
-      <h2 class="step-headline">Track your runway<br>daily.</h2>
-
-      <div class="field-group">
-        <div class="field">
-          <label class="field-label">MONTHS OF CASH REMAINING</label>
-          <div class="input-prefix-wrap">
-            <span class="input-prefix">months</span>
-            <input type="number" placeholder="e.g. 18" id="months-cash">
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="field-label">NEXT FUNDRAISE OR INVESTOR REVIEW</label>
-          <input type="date" id="next-raise">
-        </div>
-      </div>
-
-      <div class="nav-row">
-        <button class="btn-back" onclick="goTo(3)">← Back</button>
-        <div style="display:flex;align-items:center;gap:20px;">
-          <button class="btn-skip" onclick="goTo(5)">Skip for now</button>
-          <button class="btn-next" onclick="goTo(5)">
-            Next
-            <svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- STEP 4 REMOVED — merged into Step 3 -->
 
     <!-- ── STEP 5: ALERTS ── -->
     <div class="step-panel" id="step-5">
@@ -1132,7 +1113,7 @@
       </div>
 
       <div class="nav-row">
-        <button class="btn-back" onclick="goTo(4)">← Back</button>
+        <button class="btn-back" onclick="goTo(3)">← Back</button>
         <button class="btn-next generate-btn" onclick="goTo(6)" style="width:auto;padding:12px 32px;">
           Generate my risk engine
           <svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1161,7 +1142,7 @@
         </div>
         <div class="confirm-cell">
           <div class="confirm-cell-label">AI PREDICTION LAYER</div>
-          <div class="confirm-cell-val" id="confirm-signals">Active — outcome market signals enabled</div>
+          <div class="confirm-cell-val" id="confirm-signals">Active</div>
         </div>
       </div>
 
@@ -1361,6 +1342,10 @@ function goTo(step) {
     if (n < step) {
       s.classList.add('done');
       s.querySelector('.step-dot').innerHTML = '<span class="step-dot-check">✓</span>';
+    } else {
+      // restore display number
+      const displayNums = {1:'1', 2:'2', 3:'3', 5:'4'};
+      s.querySelector('.step-dot').innerHTML = displayNums[n] || n;
     }
   });
 
@@ -1377,9 +1362,11 @@ function goTo(step) {
   if (sidebarStep) sidebarStep.classList.add('active');
 
   // progress
-  const pct = step === 6 ? 100 : Math.round((step / 5) * 100);
+  const stepMap = {1:1, 2:2, 3:3, 5:4};
+  const displayStep = stepMap[step] || step;
+  const pct = step === 6 ? 100 : Math.round((displayStep / 4) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('header-step').textContent = step <= 5 ? `STEP ${step} OF 5` : 'COMPLETE';
+  document.getElementById('header-step').textContent = step <= 5 ? `STEP ${displayStep} OF 4` : 'COMPLETE';
 
   if (step === 2) renderBasket();
   if (step === 6) buildConfirmation();
@@ -1457,9 +1444,9 @@ function buildConfirmation() {
   // AI prediction layer status
   const activeAlerts = Object.values(alertState).filter(Boolean).length;
   const flagsOn = document.querySelectorAll('.toggle-card.on').length;
-  const sigStatus = flagsOn > 0 || activeAlerts > 0
-    ? `Active — ${flagsOn} exposure signal${flagsOn !== 1 ? 's' : ''} configured`
-    : 'Active — standard signal set';
+  const sigStatus = flagsOn > 0
+    ? `Active — ${flagsOn} commitment${flagsOn !== 1 ? 's' : ''} configured`
+    : 'Active';
   document.getElementById('confirm-signals').textContent = sigStatus;
 }
 </script>
