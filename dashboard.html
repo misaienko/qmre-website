@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Støtte — Risk Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f7f5;--bg2:#ffffff;--bg3:#f0f0ed;--bg4:#e8e8e4;
+    --line:rgba(0,0,0,0.08);--line-2:rgba(0,0,0,0.14);
+    --txt:#111110;--muted:#6b6b66;--faint:#a8a8a2;
+    --red:#c8351a;--red2:rgba(200,53,26,0.08);
+    --amber:#b87a00;--amber2:rgba(184,122,0,0.08);
+    --blue:#1a56db;--blue2:rgba(26,86,219,0.08);
+    --green:#15803d;--green2:rgba(21,128,61,0.08);
+    --purple:#6d28d9;
+    --panel:var(--bg2);--panel-2:var(--bg3);--panel-hi:var(--bg3);
+    --mono:'JetBrains Mono',monospace;
+    --serif:'Inter',sans-serif;
+    --sans:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-weight:400;
+    -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;}
+
+  /* SIDEBAR */
+  .sidebar{width:232px;flex-shrink:0;border-right:1px solid var(--line);padding:24px 18px;
+    position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;
+    background:var(--bg2);}
+  .brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;}
+  .brand-text{display:flex;flex-direction:column;}
+  .brand h1{font-size:30px;font-weight:700;letter-spacing:-0.6px;color:var(--txt);line-height:1.05;}
+  .brand-sub{font-size:11px;color:var(--faint);margin-top:2px;}
+  .brand-logo{width:34px;height:34px;flex-shrink:0;}
+  .nav-group{margin-bottom:4px;}
+  .nav-label{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--faint);
+    padding:6px 10px 3px;text-transform:uppercase;}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;
+    cursor:pointer;font-size:13px;font-weight:400;color:var(--muted);transition:all .12s;}
+  .nav-item svg{width:14px;height:14px;opacity:0.45;flex-shrink:0;}
+  .nav-item:hover{background:var(--bg3);color:var(--txt);}
+  .nav-item.active{background:var(--txt);color:#fff;font-weight:500;}
+  .nav-item.active svg{opacity:1;}
+  .nav-item .badge{margin-left:auto;font-family:var(--mono);font-size:9px;
+    background:var(--red);color:#fff;border-radius:4px;padding:1px 5px;font-weight:600;}
+  .cbar{height:3px;border-radius:2px;background:var(--bg4);overflow:hidden;margin-bottom:7px;}
+  .cbar i{display:block;height:100%;width:78%;background:var(--blue);border-radius:2px;}
+  .coverage-label{font-size:12px;font-weight:500;color:var(--txt);}
+  .coverage-sub{font-size:11px;color:var(--faint);margin-top:2px;line-height:1.5;}
+  .sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);}
+
+  /* TOPBAR */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg);}
+  .topbar{display:flex;align-items:center;gap:14px;padding:14px 28px;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:60;background:rgba(247,247,245,0.92);backdrop-filter:blur(12px);}
+  .topbar h2{font-family:var(--sans);font-size:20px;font-style:normal;font-weight:700;letter-spacing:-0.4px;color:var(--txt);}
+  .live{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+    color:var(--green);font-family:var(--mono);letter-spacing:0.05em;}
+  .pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .updated{font-size:11px;color:var(--faint);font-family:var(--mono);}
+  .spacer{flex:1;}
+  .horizon{display:flex;border:1px solid var(--line-2);border-radius:7px;overflow:hidden;background:var(--bg2);}
+  .horizon button{background:transparent;border:none;color:var(--faint);font-family:var(--mono);
+    font-size:10px;letter-spacing:0.08em;padding:6px 11px;cursor:pointer;transition:all .12s;font-weight:500;}
+  .horizon button.on{background:var(--txt);color:#fff;}
+  .horizon button:hover:not(.on){color:var(--txt);background:var(--bg3);}
+  .btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;font-size:12px;
+    font-weight:500;border:1px solid var(--line-2);background:var(--bg2);color:var(--muted);
+    cursor:pointer;transition:all .12s;font-family:var(--sans);}
+  .btn:hover{background:var(--bg3);color:var(--txt);}
+  .btn.primary{background:var(--txt);border-color:var(--txt);color:#fff;}
+  .btn.primary:hover{background:#2a2a28;}
+
+  /* CONTENT */
+  .content{flex:1;overflow-y:auto;padding:24px 28px;}
+  .view{display:none;}
+  .view.on{display:block;}
+
+  /* SECTION TAG */
+  .section-tag{display:flex;align-items:center;gap:10px;
+    font-size:10px;font-weight:600;letter-spacing:0.12em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:14px;margin-top:6px;}
+  .section-tag .q{color:var(--blue);font-family:var(--mono);}
+  .section-tag::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  /* PANELS */
+  .panel{background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.05);}
+  .kpi{overflow:visible;}
+  .kpi{box-shadow:0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.06),0 0 0 1px rgba(0,0,0,0.04);border-radius:12px;}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;
+    padding:13px 18px;border-bottom:1px solid var(--line);}
+  .panel-head .t{font-size:10px;font-weight:600;letter-spacing:0.09em;color:var(--faint);text-transform:uppercase;}
+  .panel-head a{font-size:12px;color:var(--blue);cursor:pointer;font-weight:500;}
+
+  /* KPI */
+  .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+  .kpi{padding:22px;position:relative;overflow:hidden;}
+  .topline{display:none;}
+  .lab{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .lab .left{font-size:10px;font-weight:600;letter-spacing:0.09em;color:var(--faint);
+    text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+  .risk-pill{font-size:9px;font-weight:700;letter-spacing:0.06em;padding:3px 7px;
+    border-radius:5px;background:var(--red2);color:var(--red);}
+  .big{font-family:var(--sans);font-size:38px;font-weight:800;line-height:1;
+    color:var(--txt);letter-spacing:-0.5px;margin-bottom:4px;}
+
+  .sub{font-size:12px;color:var(--muted);line-height:1.5;}
+  .sub b{color:var(--txt);font-weight:600;}
+  .delta{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;
+    padding:3px 8px;border-radius:5px;margin-top:10px;font-family:var(--mono);}
+  .delta.bad{background:var(--red2);color:var(--red);}
+  .delta.warn{background:var(--amber2);color:var(--amber);}
+  .delta.ok{background:var(--green2);color:var(--green);}
+
+  /* INFO */
+  .info{position:relative;display:inline-flex;align-items:center;}
+  .ic{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+    border-radius:50%;border:1px solid var(--line-2);font-size:9px;color:var(--faint);
+    cursor:default;font-family:var(--mono);font-style:normal;transition:all .12s;}
+  .info:hover .ic,.info.pin .ic{background:var(--txt);color:#fff;border-color:var(--txt);}
+  .info-pop{display:none;position:absolute;top:calc(100% + 6px);left:0;width:auto;
+    max-width:190px;min-width:170px;
+    background:var(--bg2);border:1px solid var(--line-2);border-radius:8px;
+    padding:9px 11px;font-size:11px;color:var(--muted);line-height:1.5;z-index:200;
+    box-shadow:0 8px 24px rgba(0,0,0,0.16);pointer-events:none;white-space:normal;}
+  .info-pop.right{left:auto;right:0;}
+  .info-pop.wide{max-width:230px;}
+  .info:hover .info-pop,.info.pin .info-pop{display:block;}
+  .info-pop b{color:var(--txt);font-weight:600;}
+
+  /* TILT ROW */
+  .tilt-row{display:flex;align-items:center;gap:9px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
+  .switch{position:relative;display:inline-block;width:32px;height:18px;flex-shrink:0;}
+  .switch input{opacity:0;width:0;height:0;}
+  .track{position:absolute;inset:0;background:var(--bg4);border-radius:9px;
+    border:1px solid var(--line-2);transition:all .2s;cursor:pointer;}
+  .knob{position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--bg2);
+    border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,0.12);}
+  input:checked + .track{background:var(--txt);}
+  input:checked + .track .knob{transform:translateX(14px);}
+  .tx{font-size:12px;color:var(--muted);}
+  .tx b{color:var(--txt);}
+  .tilt-note{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:auto;
+    opacity:0;transition:opacity .2s;}
+  .tilt-note.show{opacity:1;color:var(--blue);}
+
+  /* PII */
+  .pii-level{font-family:var(--sans);font-size:38px;font-weight:800;line-height:1;margin:4px 0;letter-spacing:-0.5px;color:var(--txt);}
+  .pii-pct{font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .pii-divider{height:1px;background:var(--line);margin:12px 0 10px;}
+  .pii-translate-lab{font-size:9px;font-weight:600;letter-spacing:0.12em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:5px;}
+  .pii-dollar{font-family:var(--sans);font-size:24px;font-weight:700;line-height:1;letter-spacing:-0.5px;color:var(--txt);}
+  .range{font-size:11px;color:var(--faint);margin-top:3px;font-family:var(--mono);}
+
+  /* CAVEAT */
+  .caveat{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;
+    background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+    font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+  .caveat .ico{flex-shrink:0;margin-top:1px;opacity:0.4;}
+  .caveat b{color:var(--txt);font-weight:600;}
+  .more{margin-left:auto;font-size:12px;color:var(--blue);cursor:pointer;white-space:nowrap;font-weight:500;}
+
+  /* BASKET */
+  .basket{padding:4px 0;}
+  .brow{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--line);}
+  .brow:last-child{border-bottom:none;}
+  .name{font-size:13px;font-weight:500;color:var(--txt);width:96px;flex-shrink:0;}
+  .track-bar{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+  .track-bar i{display:block;height:100%;border-radius:2px;transition:width .6s ease;}
+  .vals{font-size:11px;color:var(--muted);font-family:var(--mono);white-space:nowrap;min-width:110px;text-align:right;}
+  .pct{font-weight:600;margin-left:5px;}
+  .pct.up{color:var(--red);}
+  .pct.dn{color:var(--green);}
+
+  /* ALERT BANNER */
+  .alert-link-banner{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(200,53,26,0.03);}
+  .alert-link-banner .d{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:5px;}
+  .alert-link-banner p{font-size:13px;color:var(--muted);line-height:1.6;}
+  .alert-link-banner b{color:var(--txt);}
+  .jump{display:block;margin-top:4px;font-size:11px;color:var(--blue);cursor:pointer;font-weight:500;}
+
+  /* HEDGE */
+  .hedge{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line);}
+  .hedge:last-child{border-bottom:none;}
+  .prio{font-size:9px;font-weight:700;letter-spacing:0.09em;padding:3px 7px;border-radius:5px;
+    flex-shrink:0;margin-top:2px;font-family:var(--mono);}
+  .prio.high{background:var(--red2);color:var(--red);}
+  .prio.med{background:var(--amber2);color:var(--amber);}
+  .hedge .body{flex:1;}
+  .hedge h4{font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px;}
+  .hedge p{font-size:12px;color:var(--muted);line-height:1.6;}
+  .off{font-size:10px;font-weight:600;letter-spacing:0.07em;color:var(--faint);margin-top:5px;font-family:var(--mono);text-transform:uppercase;}
+  .explore{background:var(--txt);border:none;color:#fff;padding:6px 13px;border-radius:7px;
+    font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0;margin-top:2px;
+    transition:background .12s;font-family:var(--sans);}
+  .explore:hover{background:#2a2a28;}
+
+  /* ALERTS */
+  .alert-row{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);}
+  .alert-row:last-child{border-bottom:none;}
+  .alert-row .d{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .alert-row.red .d{background:var(--red);}
+  .alert-row.blue .d{background:var(--blue);}
+  .at{font-size:13px;color:var(--txt);line-height:1.5;}
+  .meta{font-size:10px;color:var(--faint);font-family:var(--mono);letter-spacing:0.07em;margin-top:3px;}
+  .time{font-size:11px;color:var(--faint);margin-left:auto;flex-shrink:0;font-family:var(--mono);}
+
+  /* ALERT MANAGE */
+  .alert-manage-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);}
+  .alert-manage-row:last-child{border-bottom:none;}
+
+  /* SCEN */
+  .scen-head{display:grid;grid-template-columns:1fr 100px 80px 120px;padding:9px 18px;
+    background:var(--bg3);font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--faint);
+    text-transform:uppercase;border-bottom:1px solid var(--line);}
+  .scen-row{display:grid;grid-template-columns:1fr 100px 80px 120px;padding:13px 18px;
+    border-bottom:1px solid var(--line);align-items:center;transition:background .1s;}
+  .scen-row:last-child{border-bottom:none;}
+  .scen-row:hover{background:var(--bg3);}
+  .scen-row.highlight{background:var(--blue2);}
+  .nm{font-size:13px;font-weight:500;color:var(--txt);}
+  .nm small{display:block;font-size:10px;color:var(--faint);font-weight:400;margin-top:2px;
+    font-family:var(--mono);letter-spacing:0.04em;}
+  .num{font-family:var(--mono);font-size:12px;font-weight:500;text-align:right;}
+  .num.cost{color:var(--red);}
+  .num.run{color:var(--amber);}
+  .prob{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;}
+  .prob small{display:block;font-size:10px;color:var(--faint);margin-top:2px;}
+  .dash{color:var(--faint);}
+
+  /* SIGNAL */
+  .feed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+  .panel.summary{padding:20px;}
+  .panel.summary .meta{font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .conf{display:flex;align-items:center;gap:5px;color:var(--green);font-weight:700;}
+  .panel.summary p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px;}
+  .panel.summary p:last-child{margin-bottom:0;}
+  .panel.summary b{color:var(--txt);font-weight:600;}
+  .engine-inner{padding:14px 16px;}
+  .sig{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+  .sig:last-of-type{margin-bottom:0;}
+  .sig .nm{font-size:12px;font-weight:500;color:var(--txt);width:80px;}
+  .bar{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--blue);border-radius:2px;}
+  .sig .val{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:80px;text-align:right;}
+  .tag{font-size:9px;font-weight:700;letter-spacing:0.08em;padding:2px 5px;border-radius:4px;font-family:var(--mono);}
+  .tag.active{background:var(--blue2);color:var(--blue);}
+  .tag.anchor{background:var(--green2);color:var(--green);}
+  .tag.fused{background:rgba(109,40,217,0.1);color:var(--purple);}
+  .eng-foot{font-size:11px;color:var(--faint);margin-top:10px;padding-top:9px;
+    border-top:1px solid var(--line);line-height:1.6;font-family:var(--mono);}
+  .cov-detail{}
+  .crow{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 16px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted);}
+  .crow:last-of-type{border-bottom:none;}
+  .c-conf{font-size:9px;font-weight:700;letter-spacing:0.09em;padding:2px 7px;
+    border-radius:4px;flex-shrink:0;margin-left:10px;font-family:var(--mono);}
+  .c-conf.hi{background:var(--green2);color:var(--green);}
+  .c-conf.lo{background:var(--amber2);color:var(--amber);}
+  .vel-attr{font-size:11px;color:var(--faint);font-family:var(--mono);margin-top:8px;line-height:1.8;}
+
+  /* REVEAL */
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .reveal{opacity:0;animation:rise .4s forwards;}
+
+  /* ADVISORY */
+  .advisory{font-size:9px;font-weight:700;letter-spacing:0.08em;padding:3px 7px;
+    background:var(--amber2);color:var(--amber);border-radius:5px;margin-left:auto;}
+
+  /* RPT */
+  .rpt-tab{background:var(--bg2);border:none;color:var(--faint);font-family:var(--mono);
+    font-size:10px;letter-spacing:0.1em;padding:8px 16px;cursor:pointer;transition:all .12s;font-weight:500;}
+  .rpt-tab.on{background:var(--txt);color:#fff;}
+  .rpt-tab:hover:not(.on){color:var(--txt);background:var(--bg3);}
+
+  /* MISC */
+  a[data-goto]{cursor:pointer;}
+  .ph{display:none;}
+  @media(min-width:960px){.ph{display:block;}}
+  .placeholder{padding:48px 24px;text-align:center;font-size:14px;color:var(--faint);line-height:2;}
+  .placeholder svg{display:block;margin:0 auto 14px;opacity:.2;width:32px;height:32px;}
+  .baseline-tag{font-size:9px;font-weight:600;letter-spacing:0.07em;padding:1px 5px;
+    border-radius:4px;background:var(--blue2);color:var(--blue);margin-left:6px;font-family:var(--mono);}
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-text">
+      <h1>Støtte</h1>
+      <div class="brand-sub">Risk engine</div>
+    </div>
+    <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="66" cy="36" r="25" fill="#c8351a"/>
+      <polygon points="50,94 94,94 94,50" fill="#111110"/>
+      <text x="2" y="78" font-family="Arial, Helvetica, sans-serif" font-weight="800"
+            font-size="92" fill="#111110">S</text>
+    </svg>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">MONITOR</div>
+    <div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>Dashboard</div>
+    <div class="nav-item" data-view="signal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 15l4-6 4 4 5-8 5 7"/></svg>Signal feed <span class="badge">3</span></div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">ACT</div>
+    <div class="nav-item" data-view="investments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17l4-4 4 4 4-8 4 4"/><circle cx="21" cy="9" r="1" fill="currentColor"/></svg>Investments</div>
+    <div class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Reports</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">DATA</div>
+    <div class="nav-item" data-view="upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg>Upload your data</div>
+    <div class="nav-item" data-view="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Cost basket</div>
+    <div class="nav-item" data-view="alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>Alerts</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <h2 id="viewTitle">Risk overview</h2>
+    <div class="live"><span class="pulse"></span>LIVE</div>
+    <div class="updated">UPD 06:14 UTC · 30 MAY 2026</div>
+    <div class="spacer"></div>
+    <button class="btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Export</button>
+    <button class="btn primary">Generate report</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ============ DASHBOARD (cockpit) ============ -->
+    <section class="view on" id="view-dashboard">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div class="section-tag" style="margin:0;"><span class="q">01</span> STATUS</div>
+        <div class="horizon" id="horizon">
+          <button data-h="week">WEEK</button>
+          <button data-h="month" class="on">MONTH</button>
+          <button data-h="quarter">QUARTER</button>
+        </div>
+      </div>
+      <div class="status-grid">
+
+        <!-- RUNWAY -->
+        <div class="panel kpi runway reveal" style="animation-delay:.05s">
+          <div class="topline"></div>
+          <div class="lab">
+            <span class="left">CASH RUNWAY
+              <span class="info"><span class="ic">i</span>
+                <span class="info-pop">Months of cash remaining at your current burn rate — updated daily as macro costs shift.</span>
+              </span>
+            </span>
+            <span class="risk-pill">RISK · ELEVATED</span>
+          </div>
+          <div class="big"><span id="runwayMonths">13.6</span> <small>months left</small></div>
+          <div style="margin-top:10px;line-height:2;">
+            <div id="runway-current" style="font-size:13px;color:var(--txt);"></div>
+            <div id="runway-vs-prev" style="font-size:12px;color:var(--muted);"></div>
+          </div>
+          <div class="delta bad" id="runway-delta-pill" style="margin-top:10px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg> <span id="runway-delta-txt">3 days worse than last month</span></div>
+
+          <div class="tilt-row">
+            <label class="switch"><input type="checkbox" id="tiltToggle"><span class="track"><span class="knob"></span></span></label>
+            <span class="tx">Add <b>forward signal</b>
+              <span class="info"><span class="ic">i</span>
+                <span class="info-pop wide">Adds a forward-looking tilt from prediction markets — currently a <b>41% tariff probability</b>, compressing runway by ~4 extra days.</span>
+              </span>
+            </span>
+            <span class="tilt-note" id="tiltNote">+4 days · 41% tariff prob</span>
+          </div>
+        </div>
+
+        <!-- MONTHLY COST INCREASE -->
+        <div class="panel kpi trend reveal" style="animation-delay:.19s" id="kpi-cost">
+          <div class="topline" id="topline-cost"></div>
+          <div class="lab"><span class="left">MONTHLY COST INCREASE
+            <span class="info"><span class="ic">i</span>
+              <span class="info-pop right">Extra spend above your baseline this period, in dollars — driven by macro price moves in your cost categories.</span>
+            </span>
+          </span></div>
+          <div class="big">+$<span id="costMain">15.4k</span></div>
+          <div class="sub" id="costPeriodLab">above baseline this month</div>
+          <div class="delta bad" id="costDeltaPill" style="margin-top:14px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            +$2.1k vs <span id="cost-prev-period">last month</span>
+          </div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:14px;line-height:1.8;">
+            <span id="costBreak">components +$9.2k · logistics +$4.1k · energy +$2.1k</span>
+          </div>
+          <button data-goto="investments" style="margin-top:16px;width:100%;background:var(--blue);border:none;color:#fff;
+            padding:10px 18px;font-family:var(--mono);font-size:11px;letter-spacing:1px;
+            cursor:pointer;border-radius:8px;transition:opacity .15s;"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            Take action →
+          </button>
+        </div>
+        <!-- PERSONALISED COST INDEX (PII) -->
+        <div class="panel kpi cost reveal" style="animation-delay:.12s" id="kpi-pci">
+          <div class="topline" id="topline-pci"></div>
+          <div class="lab"><span class="left">PERSONALISED COST INDEX
+            <span class="info"><span class="ic">i</span>
+              <span class="info-pop right">Your cost index, built from your actual basket — 100 is your baseline, higher means your costs are rising faster than when you started.</span>
+            </span>
+          </span></div>
+
+          <div class="pii-level">107.6</div>
+          <div class="pii-pct">your costs are <b>+7.6%</b> above your own baseline</div>
+
+          <div class="pii-divider"></div>
+
+          <!-- Period delta — replaces "translate to / likely range" -->
+          <div class="pii-translate-lab">VS. PREVIOUS <span id="pci-period-lab">MONTH</span></div>
+          <div class="pii-dollar">+<span id="pci-delta-pts">0.8</span> <span style="font-size:16px;color:var(--muted);font-family:var(--mono)">pts</span></div>
+
+          <!-- Index stats (velocity, moved inside PCI) -->
+          <div class="pii-divider"></div>
+          <div class="pii-translate-lab">INDEX STATS</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.8;margin-top:4px;">
+            Velocity &nbsp;<b style="color:var(--txt);font-family:var(--mono);font-size:13px">+<span id="velMain2">0.2</span> pts/<span id="velUnit2">mo</span></b> &nbsp;·&nbsp; <span id="vel-accel-txt">accelerating</span><br>
+            Prev period &nbsp;<b style="color:var(--txt);font-family:var(--mono);font-size:13px">+<span id="velPrev2">0.5</span> pts</b>
+          </div>
+
+          <div class="delta bad" style="margin-top:14px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7-7 7 7"/></svg> index up <span id="costDelta">since last month</span></div>
+        </div>
+
+      </div>
+
+      <div class="caveat reveal" style="animation-delay:.24s">
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <p>This estimate covers <b>78% of your cost base</b>. Your largest category — <b>talent (42%)</b> — is modeled on a sector baseline, not your live data, so treat the talent contribution as directional. Numbers shown as ranges reflect this uncertainty.</p>
+        <a class="more" data-goto="signal">Why? →</a>
+      </div>
+
+      <div class="section-tag"><span class="q">02</span> WHAT'S DRIVING IT?</div>
+      <div class="panel reveal" style="animation-delay:.05s">
+        <div class="panel-head">
+          <span class="t">COST BASKET</span>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="horizon" id="basket-horizon" style="border-radius:6px;overflow:hidden;">
+              <button data-bh="week" onclick="selectBasketHorizon(this,'week')">WEEK</button>
+              <button data-bh="month" class="on" onclick="selectBasketHorizon(this,'month')">MONTH</button>
+              <button data-bh="quarter" onclick="selectBasketHorizon(this,'quarter')">QUARTER</button>
+            </div>
+            <a data-goto="history">Edit basket →</a>
+          </div>
+        </div>
+        <div class="basket">
+          <div class="brow"><span class="name">Talent</span><div class="track-bar"><i style="width:42%;background:var(--blue)"></i></div><div class="vals">42% · $85k<span class="pct up" id="bpct-talent">+4.1%</span></div></div>
+          <div class="brow"><span class="name">Components</span><div class="track-bar"><i style="width:27%;background:var(--red)"></i></div><div class="vals">27% · $55k<span class="pct up" id="bpct-components">+14.2%</span></div></div>
+          <div class="brow"><span class="name">Logistics</span><div class="track-bar"><i style="width:15%;background:var(--amber)"></i></div><div class="vals">15% · $30k<span class="pct up" id="bpct-logistics">+8.1%</span></div></div>
+          <div class="brow"><span class="name">Compute</span><div class="track-bar"><i style="width:6%;background:var(--purple)"></i></div><div class="vals">6% · $12k<span class="pct dn" id="bpct-compute">−0.8%</span></div></div>
+          <div class="brow"><span class="name">Energy</span><div class="track-bar"><i style="width:6%;background:var(--amber)"></i></div><div class="vals">6% · $12k<span class="pct up" id="bpct-energy">+6.4%</span></div></div>
+          <div class="brow"><span class="name">Facilities</span><div class="track-bar"><i style="width:4%;background:var(--faint)"></i></div><div class="vals">4% · $8k<span class="pct up" id="bpct-facilities">+2.1%</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SIGNAL FEED (summary + method & coverage) ============ -->
+    <!-- ============ SIGNAL FEED ============ -->
+    <section class="view" id="view-signal">
+
+      <div class="section-tag"><span class="q">→</span> ACTION NEEDED</div>
+      <div class="panel" style="margin-bottom:16px;">
+        <div class="alert-link-banner">
+          <span class="d"></span>
+          <p><b>Prediction layer suggests action.</b> Elevated tariff probability (41%) on your components exposure — forward signal recommends reviewing your hedge position before the next policy event.</p>
+        </div>
+        <div class="crow" style="padding:14px 22px;">
+          <span><b style="color:var(--txt);">Components — tariff risk</b><br><span style="font-size:11px;color:var(--muted);">41% fused probability · likely to rise further if tariff round confirmed</span></span>
+          <button class="explore" onclick="showView('investments')" style="margin-left:auto;">See hedges →</button>
+        </div>
+        <div class="crow" style="padding:14px 22px;border-bottom:none;">
+          <span><b style="color:var(--txt);">Logistics — freight pressure</b><br><span style="font-size:11px;color:var(--muted);">53% probability of port congestion event within 30 days</span></span>
+          <button class="explore" onclick="showView('investments')" style="margin-left:auto;">See hedges →</button>
+        </div>
+      </div>
+
+      <div class="section-tag"><span class="q">→</span> SIGNALS</div>
+      <div class="feed-grid">
+        <div class="panel summary">
+          <div class="meta">SIGNAL SUMMARY &nbsp;·&nbsp; <span style="font-family:var(--mono);font-size:10px;color:var(--faint);">GENERATED 06:14 UTC</span></div>
+          <p>Your cost base is running <b>above general inflation</b>, driven mainly by imported components and the logistics that move them.</p>
+          <p><b>Components</b> are up an estimated <b>14.2%</b> — in line with the elevated tariff probability currently priced by prediction markets. <b>Logistics</b> has followed, with freight benchmarks up ~8% over the trailing quarter.</p>
+          <p>At your basket mix, this adds roughly <b>$15k of extra spend this month</b> — compressing runway by about <b>18 days</b> under the median scenario.</p>
+          <p style="color:var(--muted);font-size:13px">Compute is flat to slightly down. Talent and facilities are stable.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <span class="t">ASSET PRICE — TRACKED COST</span>
+            <select id="asset-select" onchange="selectAsset(this.value)" style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:6px;">
+              <option value="components">Components / Hardware</option>
+              <option value="logistics">Logistics &amp; Freight</option>
+              <option value="energy">Energy &amp; Utilities</option>
+              <option value="talent">Talent &amp; Payroll</option>
+            </select>
+          </div>
+          <div class="engine-inner">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--faint);margin-bottom:14px;" id="asset-label">COMPONENTS — STRESS-TEST PROJECTION</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(239,91,86,0.08);border:1px solid rgba(239,91,86,0.2);border-radius:6px;">
+                <span style="font-size:12px;color:var(--muted);">Pessimistic scenario</span>
+                <span style="font-family:var(--mono);font-size:13px;color:var(--red);" id="asset-pess">+22.4%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(238,177,62,0.08);border:1px solid rgba(238,177,62,0.2);border-radius:6px;">
+                <span style="font-size:12px;color:var(--muted);">Realistic / Median (P50)</span>
+                <span style="font-family:var(--mono);font-size:13px;color:var(--amber);" id="asset-med">+14.2%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(67,207,140,0.08);border:1px solid rgba(67,207,140,0.2);border-radius:6px;">
+                <span style="font-size:12px;color:var(--muted);">Optimistic scenario</span>
+                <span style="font-family:var(--mono);font-size:13px;color:var(--green);" id="asset-opt">+6.1%</span>
+              </div>
+            </div>
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--faint);margin-bottom:10px;">PREDICTION — ALT SOURCES</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(160,135,239,0.08);border:1px solid rgba(160,135,239,0.25);border-radius:6px;">
+              <span style="font-size:12px;color:var(--muted);">Fused forward estimate</span>
+              <span style="font-family:var(--mono);font-size:13px;color:var(--purple);" id="asset-fused">+17.8% · 41% conf.</span>
+            </div>
+            <div class="eng-foot" style="margin-top:12px;">Block bootstrap stress-testing · Bayesian fusion · Brier <b>0.09</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-tag">DATA SOURCE — ALT SIGNAL BREAKDOWN</div>
+      <div class="panel">
+        <div style="padding:14px 22px;font-family:var(--mono);font-size:10px;color:var(--faint);border-bottom:1px solid var(--line);">
+          SIGNAL COMPONENTS FOR: <span id="data-source-asset" style="color:var(--txt);">COMPONENTS / HARDWARE</span>
+        </div>
+        <div class="engine-inner cov-detail">
+          <div class="crow"><span>Kalshi — tariff outcome contracts · signaled elevated (72%) before last tariff round</span><span class="c-conf hi">ACTIVE</span></div>
+          <div class="crow"><span>Polymarket — trade policy contracts · confirmed Kalshi signal (68%) · cross-venue agreement</span><span class="c-conf hi">ACTIVE</span></div>
+          <div class="crow"><span>News / alt feed — trade announcements · leading indicator · direction: upward · credibility: high</span><span class="c-conf hi">ACTIVE</span></div>
+          <div class="crow"><span>BLS PPI PCU334 — live feed · confirmed +14.2% move vs prior period</span><span class="c-conf hi">CONFIRMED</span></div>
+          <div class="crow"><span>Base rate · historical tariff frequency — anchor prior used in Bayesian fusion</span><span class="c-conf lo">ANCHOR</span></div>
+          <div class="eng-foot">Redundancy-adjusted Bayesian fusion — correlated signals down-weighted · logged 06:14 UTC</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HEDGE GUIDANCE ============ -->
+    <!-- ============ REPORTS (scenarios live here) ============ -->
+    <!-- ============ REPORTS ============ -->
+    <section class="view" id="view-reports">
+
+      <!-- Category tabs -->
+      <div style="display:flex;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;width:fit-content;margin-bottom:24px;">
+        <button class="rpt-tab on" onclick="selectRptTab(this,'cost')">Account Cost Summaries</button>
+        <button class="rpt-tab" onclick="selectRptTab(this,'mc')">Monte Carlo</button>
+        <button class="rpt-tab" onclick="selectRptTab(this,'pred')">Prediction Layer</button>
+      </div>
+
+      <!-- 1. Account Cost Summaries -->
+      <div class="rpt-panel" id="rpt-cost">
+        <div class="section-tag"><span class="q">→</span> ACCOUNT COST SUMMARIES</div>
+        <div class="panel" style="margin-bottom:16px;">
+          <div class="scen-head" style="grid-template-columns:1fr 100px 110px 90px 90px 80px;">
+            <span>REPORT</span><span style="text-align:right">PERIOD</span><span style="text-align:right">COST SHIFT</span><span style="text-align:right">HEDGE P&L</span><span style="text-align:right">STATUS</span><span style="text-align:right">ACTION</span>
+          </div>
+          <div class="scen-row" style="grid-template-columns:1fr 100px 110px 90px 90px 80px;cursor:pointer;" onclick="previewReport('May 2026 Cost Summary')">
+            <div class="nm">May 2026 Cost Summary<small>Components · Logistics · Energy · FX forwards · XLB ETF · USD/CNY</small></div>
+            <div class="prob">May 2026</div>
+            <div class="num cost">+$15.4k</div>
+            <div class="num" style="color:var(--green);text-align:right">+$4.7k</div>
+            <div class="prob" style="color:var(--green)">Ready</div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+              <button class="explore" onclick="event.stopPropagation();previewReport('May 2026 Cost Summary')">Preview</button>
+              <button class="explore" onclick="event.stopPropagation();">↓</button>
+            </div>
+          </div>
+          <div class="scen-row" style="grid-template-columns:1fr 100px 110px 90px 90px 80px;cursor:pointer;" onclick="previewReport('April 2026 Cost Summary')">
+            <div class="nm">April 2026 Cost Summary<small>Components · Logistics · XLB ETF partial offset</small></div>
+            <div class="prob">Apr 2026</div>
+            <div class="num cost">+$12.1k</div>
+            <div class="num" style="color:var(--amber);text-align:right">+$1.1k</div>
+            <div class="prob" style="color:var(--green)">Ready</div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+              <button class="explore" onclick="event.stopPropagation();previewReport('April 2026 Cost Summary')">Preview</button>
+              <button class="explore" onclick="event.stopPropagation();">↓</button>
+            </div>
+          </div>
+          <div class="scen-row" style="grid-template-columns:1fr 100px 110px 90px 90px 80px;cursor:pointer;" onclick="previewReport('Q1 2026 Board Pack')">
+            <div class="nm">Q1 2026 Board Pack — macro risk appendix<small>Quarterly summary · all hedges placed · full performance</small></div>
+            <div class="prob">Q1 2026</div>
+            <div class="num cost">+$38.2k</div>
+            <div class="num" style="color:var(--green);text-align:right">+$6.4k</div>
+            <div class="prob" style="color:var(--green)">Ready</div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+              <button class="explore" onclick="event.stopPropagation();previewReport('Q1 2026 Board Pack')">Preview</button>
+              <button class="explore" onclick="event.stopPropagation();">↓</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Monte Carlo Reports -->
+      <div class="rpt-panel" id="rpt-mc" style="display:none;">
+        <div class="section-tag"><span class="q">→</span> MONTE CARLO SCENARIO REPORTS</div>
+        <div class="panel scen-table" style="margin-bottom:16px;">
+          <div class="scen-head"><span>SCENARIO</span><span style="text-align:right">MONTHLY +$</span><span style="text-align:right">RUNWAY</span><span style="text-align:right" class="ph">PROBABILITY</span></div>
+          <div class="scen-row"><div class="nm">2018 tariff round analog<small>HISTORICAL · components +18%, FX +8%</small></div><div class="num cost">+$21.4k</div><div class="num run">−26d</div><div class="prob"><span class="dash">—</span><small>NAMED ANALOG</small></div></div>
+          <div class="scen-row"><div class="nm">2022 energy shock analog<small>HISTORICAL · energy +42%, logistics +28%</small></div><div class="num cost">+$18.9k</div><div class="num run">−23d</div><div class="prob"><span class="dash">—</span><small>NAMED ANALOG</small></div></div>
+          <div class="scen-row highlight"><div class="nm">Median forecast (P50)<small>MONTE CARLO · 10,000 scenarios · most likely path</small></div><div class="num cost">+$15.4k</div><div class="num run">−18d</div><div class="prob">50%<small>EXPECTED</small></div></div>
+          <div class="scen-row"><div class="nm">Severe case (P90)<small>MONTE CARLO · 1-in-10 bad outcome</small></div><div class="num cost">+$38.2k</div><div class="num run">−47d</div><div class="prob">10%<small>TAIL RISK</small></div></div>
+          <div class="scen-row"><div class="nm">No further shock<small>Current trajectory holds, no new macro move</small></div><div class="num cost">+$2.1k</div><div class="num run">−3d</div><div class="prob"><span class="dash">—</span><small>FLOOR CASE</small></div></div>
+        </div>
+        <div class="panel">
+          <div class="scen-head" style="grid-template-columns:1fr 120px 80px 80px;"><span>SAVED MC REPORT</span><span style="text-align:right">GENERATED</span><span></span><span></span></div>
+          <div class="scen-row" style="grid-template-columns:1fr 120px 80px 80px;cursor:pointer;" onclick="previewReport('MC Report June 2026')">
+            <div class="nm">Monte Carlo — June 2026 run<small>10,000 scenarios · block bootstrap · correlation matrix v1.2</small></div>
+            <div class="prob">2026-06-07</div>
+            <button class="explore" onclick="event.stopPropagation();previewReport('MC Report June 2026')">Preview</button>
+            <button class="explore" onclick="event.stopPropagation();">↓</button>
+          </div>
+          <div class="scen-row" style="grid-template-columns:1fr 120px 80px 80px;cursor:pointer;" onclick="previewReport('MC Report May 2026')">
+            <div class="nm">Monte Carlo — May 2026 run<small>10,000 scenarios · block bootstrap · correlation matrix v1.1</small></div>
+            <div class="prob">2026-05-01</div>
+            <button class="explore" onclick="event.stopPropagation();previewReport('MC Report May 2026')">Preview</button>
+            <button class="explore" onclick="event.stopPropagation();">↓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Prediction Layer Reports -->
+      <div class="rpt-panel" id="rpt-pred" style="display:none;">
+        <div class="section-tag"><span class="q">→</span> PREDICTION LAYER — FUTURE PRICE MOVEMENT REPORTS</div>
+        <div class="panel">
+          <div class="scen-head" style="grid-template-columns:1fr 100px 100px 80px 80px;"><span>REPORT</span><span style="text-align:right">GENERATED</span><span style="text-align:right">ACCURACY</span><span></span><span></span></div>
+          <div class="scen-row" style="grid-template-columns:1fr 100px 100px 80px 80px;cursor:pointer;" onclick="previewReport('Pred Layer June 2026')">
+            <div class="nm">Prediction layer — tariff + energy outlook<small>Bayesian fusion · Kalshi + Polymarket + news signals · 41% tariff prob</small></div>
+            <div class="prob">2026-06-07</div>
+            <div class="prob" style="color:var(--green)">Brier 0.09</div>
+            <button class="explore" onclick="event.stopPropagation();previewReport('Pred Layer June 2026')">Preview</button>
+            <button class="explore" onclick="event.stopPropagation();">↓</button>
+          </div>
+          <div class="scen-row" style="grid-template-columns:1fr 100px 100px 80px 80px;cursor:pointer;" onclick="previewReport('Pred Layer May 2026')">
+            <div class="nm">Prediction layer — freight + rate outlook<small>Bayesian fusion · 5 signal sources · 3 resolved contracts</small></div>
+            <div class="prob">2026-05-01</div>
+            <div class="prob" style="color:var(--amber)">Brier 0.14</div>
+            <button class="explore" onclick="event.stopPropagation();previewReport('Pred Layer May 2026')">Preview</button>
+            <button class="explore" onclick="event.stopPropagation();">↓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview modal -->
+      <div id="rpt-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:center;justify-content:center;">
+        <div style="background:var(--panel);border:1px solid var(--line-2);border-radius:14px;width:680px;max-height:80vh;overflow-y:auto;padding:32px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted);" id="modal-title">REPORT PREVIEW</div>
+            <button onclick="closePreview()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;">×</button>
+          </div>
+          <div id="modal-body" style="font-size:14px;color:var(--muted);line-height:1.7;"></div>
+          <div style="margin-top:24px;display:flex;gap:12px;">
+            <button class="btn primary" onclick="closePreview()">↓ Download PDF</button>
+            <button class="btn" onclick="closePreview()">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============ ALERTS ============ -->
+    <section class="view" id="view-alerts">
+      <div class="section-tag"><span class="q">→</span> ACTIVE ALERTS</div>
+      <div class="panel" style="margin-bottom:16px;">
+        <div class="alert-row red"><span class="d"></span><div><div class="at"><b>Runway threshold crossed</b> — cost shift estimated at −18 days (your limit: −14 days)</div><div class="meta">RUNWAY ALERT · THRESHOLD −14d · TRIGGERED</div><span class="jump" data-goto="hedge">→ See suggested hedges</span></div><span class="time">06:14 UTC</span></div>
+        <div class="alert-row red"><span class="d"></span><div><div class="at"><b>Cost exposure exceeded</b> your $10k threshold — now +$15.4k this month</div><div class="meta">COST ALERT · THRESHOLD $10k · TRIGGERED</div></div><span class="time">06:14 UTC</span></div>
+        <div class="alert-row blue"><span class="d"></span><div><div class="at">Policy event — tariff outcome contracts showing elevated probability (41% fused)</div><div class="meta">POLICY EVENT · FORWARD SIGNAL</div><span class="jump" data-goto="signal">→ Inspect the signal</span></div><span class="time">Yesterday</span></div>
+      </div>
+
+      <div class="section-tag"><span class="q">→</span> MANAGE ALERTS — ADD OR REMOVE</div>
+      <div class="panel" style="margin-bottom:16px;" id="alert-list">
+        <!-- existing alerts -->
+        <div class="alert-manage-row" id="am-runway">
+          <div style="display:flex;align-items:center;gap:14px;flex:1;">
+            <div class="alert-row-dot" style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:500;">Runway impact alert</div>
+              <div style="font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:3px;">Trigger when macro shift removes more than <input type="number" value="14" style="width:40px;background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;"> days from runway</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <select style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--muted);font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:6px;">
+              <option>HOURLY</option><option selected>DAILY</option><option>WEEKLY</option>
+            </select>
+            <button onclick="removeAlert('am-runway','Runway impact alert')" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button>
+          </div>
+        </div>
+        <div class="alert-manage-row" id="am-cost">
+          <div style="display:flex;align-items:center;gap:14px;flex:1;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:500;">Monthly cost spike alert</div>
+              <div style="font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:3px;">Trigger when cost exposure increases more than $<input type="number" value="10000" style="width:80px;background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;">/month</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <select style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--muted);font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:6px;">
+              <option>HOURLY</option><option selected>DAILY</option><option>WEEKLY</option>
+            </select>
+            <button onclick="removeAlert('am-cost','Monthly cost spike alert')" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button>
+          </div>
+        </div>
+        <div class="alert-manage-row" id="am-policy">
+          <div style="display:flex;align-items:center;gap:14px;flex:1;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:500;">Policy event alert</div>
+              <div style="font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:3px;">Trigger when a tariff, rate, or regulatory event affects my cost basket</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <select style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--muted);font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:6px;">
+              <option selected>HOURLY</option><option>DAILY</option><option>WEEKLY</option>
+            </select>
+            <button onclick="removeAlert('am-policy','Policy event alert')" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add new alert -->
+      <div class="panel" style="padding:20px 22px;">
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);margin-bottom:14px;">+ ADD NEW ALERT</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+          <select id="new-alert-type" style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 12px;border-radius:8px;flex:1;min-width:200px;">
+            <option value="">Select alert type…</option>
+            <option value="Monthly cost spike alert">Monthly cost spike alert</option>
+            <option value="Covenant proximity alert">Covenant proximity alert</option>
+            <option value="PCI index spike">PCI index spike</option>
+            <option value="Specific category cost spike">Specific category cost spike</option>
+            <option value="Signal confidence drop">Signal confidence drop</option>
+          </select>
+          <select id="new-alert-timing" style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 12px;border-radius:8px;">
+            <option>HOURLY</option><option selected>DAILY</option><option>WEEKLY</option><option>MONTHLY</option>
+          </select>
+          <button class="btn primary" onclick="addAlert()">Add alert</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COST BASKET — P&L TRACKER ============ -->
+    <section class="view" id="view-history">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);">VIEW MODE</div>
+        <div class="horizon" style="border-radius:8px;overflow:hidden;">
+          <button data-plm="monthly" class="on" onclick="selectPLMode(this)">MONTHLY</button>
+          <button data-plm="yearly" onclick="selectPLMode(this)">YEARLY</button>
+        </div>
+      </div>
+
+      <div class="section-tag"><span class="q">→</span> P&amp;L TRACKER — UPLOADED YEARS</div>
+      <div class="panel" style="margin-bottom:16px;padding:24px;">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--faint);margin-bottom:16px;">MONTHLY COST CHANGES — ALL CATEGORIES · bars show raw spend change vs prior period</div>
+        <!-- Bar chart grid -->
+        <div style="display:flex;gap:6px;align-items:flex-end;height:120px;margin-bottom:8px;">
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;">
+            <div style="background:var(--red);border-radius:3px 3px 0 0;height:35%;opacity:0.7;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Jan</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;">
+            <div style="background:var(--red);border-radius:3px 3px 0 0;height:40%;opacity:0.75;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Feb</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;">
+            <div style="background:var(--amber);border-radius:3px 3px 0 0;height:30%;opacity:0.7;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Mar</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;">
+            <div style="background:var(--green);border-radius:3px 3px 0 0;height:15%;opacity:0.8;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Apr</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;">
+            <div style="background:var(--green);border-radius:3px 3px 0 0;height:10%;opacity:0.8;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">May</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;">
+            <div style="background:var(--red);border-radius:3px 3px 0 0;height:55%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Jun</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;opacity:0.4;">
+            <div style="background:var(--line-2);border-radius:3px 3px 0 0;height:20%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Jul</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;opacity:0.4;">
+            <div style="background:var(--line-2);border-radius:3px 3px 0 0;height:20%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Aug</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;opacity:0.4;">
+            <div style="background:var(--line-2);border-radius:3px 3px 0 0;height:20%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Sep</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;opacity:0.4;">
+            <div style="background:var(--line-2);border-radius:3px 3px 0 0;height:20%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Oct</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;opacity:0.4;">
+            <div style="background:var(--line-2);border-radius:3px 3px 0 0;height:20%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Nov</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%;opacity:0.4;">
+            <div style="background:var(--line-2);border-radius:3px 3px 0 0;height:20%;"></div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--faint);text-align:center;margin-top:4px;">Dec</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:8px;">
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:var(--red);display:inline-block;"></span>Cost increase</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:var(--green);display:inline-block;"></span>Cost decrease (hedge effective)</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:var(--line-2);display:inline-block;"></span>No data yet</span>
+        </div>
+      </div>
+
+      <div class="section-tag"><span class="q">→</span> TARGETED COSTS — WHAT YOU WANT TO LOCK IN</div>
+      <div class="panel" id="targeted-costs">
+        <div class="panel-head"><span class="t">COSTS TARGETED FOR HEDGING</span></div>
+        <div class="brow" style="padding:14px 22px;border-bottom:1px solid var(--line);">
+          <span class="name">Components / Hardware<span class="baseline-tag">ACTIVE</span></span>
+          <div class="track-bar"><i style="width:27%;background:var(--red)"></i></div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="vals">27% · $55k<span class="pct up">+14.2%</span></div>
+            <button onclick="removeTargetCost(this)" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:3px 8px;border-radius:5px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button>
+          </div>
+        </div>
+        <div class="brow" style="padding:14px 22px;border-bottom:1px solid var(--line);">
+          <span class="name">Logistics &amp; Freight<span class="baseline-tag">ACTIVE</span></span>
+          <div class="track-bar"><i style="width:15%;background:var(--amber)"></i></div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="vals">15% · $30k<span class="pct up">+8.1%</span></div>
+            <button onclick="removeTargetCost(this)" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:3px 8px;border-radius:5px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button>
+          </div>
+        </div>
+        <div style="padding:14px 22px;font-family:var(--mono);font-size:11px;color:var(--faint);border-bottom:1px solid var(--line);">
+          These categories are prioritised on your dashboard and in hedge guidance suggestions.
+        </div>
+        <!-- Add new cost — inline form matching alerts pattern -->
+        <div style="padding:20px 22px;">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--muted);margin-bottom:14px;">+ ADD COST TO TRACK</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <select id="new-cost-type" style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 12px;border-radius:8px;flex:1;min-width:200px;">
+              <option value="">Select cost category…</option>
+              <option>Talent &amp; Payroll</option>
+              <option>Cloud &amp; Compute</option>
+              <option>Energy &amp; Utilities</option>
+              <option>Facilities &amp; Rent</option>
+              <option>Raw materials</option>
+              <option>Other</option>
+            </select>
+            <input type="text" id="new-cost-custom" placeholder="Or type custom category…" style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:12px;padding:8px 12px;border-radius:8px;flex:1;min-width:180px;outline:none;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'">
+            <button class="btn primary" onclick="addTargetCost()">Add cost</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- old view-basket hidden/replaced by history -->
+    <section class="view" id="view-basket" style="display:none;"></section>
+
+    <!-- ============ INVESTMENTS ============ -->
+    <section class="view" id="view-investments">
+      <div style="display:flex;gap:12px;margin-bottom:20px;">
+        <button class="btn primary" onclick="exportInvestmentReport()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Export summary report</button>
+      </div>
+
+      <div class="section-tag"><span class="q">→</span> INVESTMENTS — CONNECTED ACCOUNTS</div>
+      <div class="panel" style="margin-bottom:16px;">
+        <div class="panel-head"><span class="t">CONNECTED ACCOUNTS</span></div>
+        <div class="alert-row"><span class="d" style="background:var(--blue);box-shadow:0 0 8px var(--blue)"></span>
+          <div><div class="at"><b>Interactive Brokers</b> — FX Forwards portfolio</div><div class="meta">CONNECTED · LAST SYNC 06:14 UTC</div></div>
+          <span class="time" style="color:var(--green)">Active</span></div>
+        <div class="alert-row" style="cursor:pointer;" onclick="showConnectModal()"><span class="d" style="background:var(--faint)"></span>
+          <div><div class="at" style="color:var(--blue)">Connect account</div><div class="meta">Interactive Brokers · Fidelity · Schwab · Brex · Mercury</div></div>
+          <span class="time" style="color:var(--blue)">Connect →</span></div>
+      </div>
+
+      <!-- HEDGE GUIDANCE moved here -->
+      <div class="section-tag"><span class="q">→</span> HEDGE GUIDANCE</div>
+      <div class="panel" style="margin-bottom:16px;">
+        <div class="alert-link-banner">
+          <span class="d"></span>
+          <p><b>Triggered by your runway alert.</b> The cost shift crossed your −14 day threshold. These options could partially offset the components &amp; logistics exposure driving it.</p>
+        </div>
+        <div class="hedge">
+          <span class="prio high">HIGH</span>
+          <div class="body"><h4>FX forward — USD / CNY</h4><p>Components are 27% of your basket with imported sourcing active. An FX forward could partially offset imported cost volatility.</p><div class="off">SIZING · 15–25% of components monthly spend</div></div>
+          <button class="explore">Explore →</button>
+        </div>
+        <div class="hedge">
+          <span class="prio high">HIGH</span>
+          <div class="body"><h4>Industrial materials ETF — XLB / XLI</h4><p>Sector ETF exposure as a cross-sector hedge against supply-chain input cost risk.</p><div class="off">SIZING · 10–20% of components monthly spend</div></div>
+          <button class="explore">Explore →</button>
+        </div>
+        <div class="hedge">
+          <span class="prio med">MED</span>
+          <div class="body"><h4>Freight rate instrument</h4><p>Logistics at 15% of basket with freight benchmarks elevated.</p><div class="off">SIZING · 20–35% of logistics monthly spend</div></div>
+          <button class="explore">Explore →</button>
+        </div>
+      </div>
+
+      <!-- Previous hedges with month picker -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div class="section-tag" style="margin:0;flex:1;">PREVIOUS HEDGES — HOW THEY PLAYED OUT</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-left:16px;">
+          <div class="horizon" style="border-radius:8px;overflow:hidden;" id="inv-horizon">
+            <button data-ih="month" class="on" onclick="selectInvHorizon(this,'month')">MONTH</button>
+            <button data-ih="quarter" onclick="selectInvHorizon(this,'quarter')">QUARTER</button>
+            <button data-ih="all" onclick="selectInvHorizon(this,'all')">ALL</button>
+          </div>
+          <select id="hedge-month-select" onchange="filterHedgeMonth(this.value)" style="background:var(--panel);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:8px;">
+            <option value="all">All months</option>
+            <option value="2026-05">May 2026</option>
+            <option value="2026-04">Apr 2026</option>
+            <option value="2026-03">Mar 2026</option>
+            <option value="2026-02">Feb 2026</option>
+            <option value="2026-01">Jan 2026</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="scen-head" style="grid-template-columns:1fr 100px 100px 110px 100px;">
+          <span>HEDGE</span><span style="text-align:right">SIZE</span><span style="text-align:right">OPENED</span><span style="text-align:right">OUTCOME</span><span style="text-align:right">P&L</span>
+        </div>
+        <div class="scen-row hedge-entry" data-month="2026-05" style="grid-template-columns:1fr 100px 100px 110px 100px;">
+          <div class="nm">USD/CNY forward<small>Components exposure · 20% of monthly spend · Interactive Brokers</small></div>
+          <div class="num" style="text-align:right;font-size:14px;">$11k</div>
+          <div class="prob">2026-05-01</div>
+          <div class="prob" style="color:var(--green)">Effective<small>Tariff round hit</small></div>
+          <div class="num" style="color:var(--green);text-align:right">+$4.2k</div>
+        </div>
+        <div class="scen-row hedge-entry" data-month="2026-04" style="grid-template-columns:1fr 100px 100px 110px 100px;">
+          <div class="nm">XLB sector ETF<small>Industrial materials · components hedge · Interactive Brokers</small></div>
+          <div class="num" style="text-align:right;font-size:14px;">$8k</div>
+          <div class="prob">2026-04-15</div>
+          <div class="prob" style="color:var(--amber)">Partial<small>Partial move</small></div>
+          <div class="num" style="color:var(--amber);text-align:right">+$1.1k</div>
+        </div>
+        <div class="scen-row hedge-entry" data-month="2026-03" style="grid-template-columns:1fr 100px 100px 110px 100px;">
+          <div class="nm">USD/CNY forward<small>Components exposure · 15% of monthly spend</small></div>
+          <div class="num" style="text-align:right;font-size:14px;">$8k</div>
+          <div class="prob">2026-03-01</div>
+          <div class="prob" style="color:var(--green)">Effective</div>
+          <div class="num" style="color:var(--green);text-align:right">+$2.8k</div>
+        </div>
+        <div class="scen-row hedge-entry" data-month="2026-01" style="grid-template-columns:1fr 100px 100px 110px 100px;">
+          <div class="nm">Freight rate ETF<small>Logistics exposure · spot rate protection</small></div>
+          <div class="num" style="text-align:right;font-size:14px;">$6k</div>
+          <div class="prob">2026-01-10</div>
+          <div class="prob" style="color:var(--red)">Missed<small>Rates didn't spike</small></div>
+          <div class="num" style="color:var(--red);text-align:right">−$0.6k</div>
+        </div>
+      </div>
+
+      <!-- Connect modal -->
+      <div id="connect-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;">
+        <div style="background:var(--panel);border:1px solid var(--line-2);border-radius:14px;width:480px;padding:32px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted);">CONNECT INVESTMENT ACCOUNT</div>
+            <button onclick="closeConnectModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;">×</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+            <button class="btn" style="justify-content:flex-start;gap:14px;" onclick="closeConnectModal()"><span style="width:24px;height:24px;background:var(--blue);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#fff;font-weight:700;">IB</span>Interactive Brokers</button>
+            <button class="btn" style="justify-content:flex-start;gap:14px;" onclick="closeConnectModal()"><span style="width:24px;height:24px;background:var(--green);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#fff;font-weight:700;">F</span>Fidelity</button>
+            <button class="btn" style="justify-content:flex-start;gap:14px;" onclick="closeConnectModal()"><span style="width:24px;height:24px;background:var(--amber);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#fff;font-weight:700;">B</span>Brex</button>
+            <button class="btn" style="justify-content:flex-start;gap:14px;" onclick="closeConnectModal()"><span style="width:24px;height:24px;background:var(--purple);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#fff;font-weight:700;">M</span>Mercury</button>
+            <button class="btn" style="justify-content:flex-start;gap:14px;" onclick="closeConnectModal()"><span style="width:24px;height:24px;background:var(--faint);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#fff;font-weight:700;">S</span>Schwab</button>
+          </div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--faint);">OAuth connection · read-only access · no trade execution</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ UPLOAD DATA ============ -->
+    <section class="view" id="view-upload">
+      <div class="section-tag"><span class="q">→</span> UPLOAD YOUR DATA — P&amp;L FEED</div>
+      <div class="panel" style="margin-bottom:16px;">
+        <div class="panel-head"><span class="t">MONTHLY P&amp;L UPLOAD</span><a onclick="document.getElementById('dash-file-input').click()">Upload new →</a></div>
+        <input type="file" id="dash-file-input" accept=".csv,.xlsx,.xls,.pdf" style="display:none;" onchange="handleDashUpload(this)">
+        <div style="padding:28px 24px;border-bottom:1px solid var(--line);">
+          <div id="dash-dropzone" style="border:1px dashed var(--line-2);background:var(--panel-2);padding:36px;
+            text-align:center;border-radius:10px;cursor:pointer;transition:all .2s;"
+            onclick="document.getElementById('dash-file-input').click()"
+            ondragover="event.preventDefault();this.style.borderColor='var(--blue)'"
+            ondragleave="this.style.borderColor='var(--line-2)'"
+            ondrop="handleDashDrop(event)">
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:1.5px;color:var(--faint);margin-bottom:10px;">DROP FILE OR CLICK TO BROWSE</div>
+            <div style="font-size:14px;color:var(--muted);margin-bottom:10px;">Upload your P&amp;L or expense export</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--faint);">CSV · Excel · PDF · QuickBooks · Xero · NetSuite</div>
+          </div>
+          <div id="dash-upload-status" style="display:none;margin-top:14px;padding:12px 16px;background:rgba(67,207,140,0.08);border:1px solid rgba(67,207,140,0.2);border-radius:8px;font-family:var(--mono);font-size:11px;color:var(--green);"></div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:10px;">
+            Parsed locally — no raw financial data stored or transmitted
+          </div>
+        </div>
+        <div class="alert-row"><span class="d" style="background:var(--green)"></span>
+          <div><div class="at"><b>May 2026 P&amp;L</b> — processed successfully · 6 categories mapped</div><div class="meta">UPLOADED 2026-06-01 · CSV · 847 rows</div></div>
+          <button onclick="" style="background:none;border:1px solid var(--line-2);color:var(--blue);padding:4px 12px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:10px;">↓ Download</button>
+        </div>
+        <div class="alert-row"><span class="d" style="background:var(--blue)"></span>
+          <div><div class="at"><b>April 2026 P&amp;L</b> — processed · 6 categories mapped</div><div class="meta">UPLOADED 2026-05-02 · CSV · 791 rows</div></div>
+          <button onclick="" style="background:none;border:1px solid var(--line-2);color:var(--blue);padding:4px 12px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:10px;">↓ Download</button>
+        </div>
+      </div>
+    </section>
+
+<script>
+  // ---- view router ----
+  const titles = {dashboard:'Risk overview',history:'Cost basket',signal:'Signal feed',
+    investments:'Investments',reports:'Reports',
+    upload:'Upload your data',basket:'Cost basket',alerts:'Active alerts'};
+  function showView(v){
+    document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='view-'+v));
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.view===v));
+    document.getElementById('viewTitle').textContent = titles[v]||'Risk overview';
+    const hz = document.getElementById('horizon');
+    if(hz){ hz.style.opacity='1'; hz.style.pointerEvents=''; }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>showView(n.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>showView(el.dataset.goto)));
+
+  // ---- report tabs ----
+  function selectRptTab(el,key){
+    document.querySelectorAll('.rpt-tab').forEach(t=>t.classList.remove('on'));
+    el.classList.add('on');
+    document.querySelectorAll('.rpt-panel').forEach(p=>p.style.display='none');
+    document.getElementById('rpt-'+key).style.display='block';
+  }
+  const rptContent = {
+    'May 2026 Cost Summary':'<b>May 2026 — Account Cost Summary</b><br><br>Total cost increase: +$15,400 vs baseline<br>Components: +$9,200 (+14.2%) · FX forward offset: +$4,200 net<br>Logistics: +$4,100 (+8.1%)<br><br><b>Hedges placed:</b><br>USD/CNY forward — $11k · Return: +$4,200<br>XLB ETF — $8k · Return: +$1,100<br><br><b>Net position:</b> $15.4k offset by $5.3k = net exposure $10.1k',
+    'April 2026 Cost Summary':'<b>April 2026 — Account Cost Summary</b><br><br>Total cost increase: +$12,100<br>Components: +$7,800 (+12.1%)<br>XLB ETF partial offset: +$1,100',
+    'Q1 2026 Board Pack':'<b>Q1 2026 Board Pack — Macro Risk Appendix</b><br><br>Quarterly cost increase: +$38,200<br>Hedge returns: +$6,400 · Net exposure: +$31,800',
+    'MC Report June 2026':'<b>Monte Carlo — June 2026</b><br><br>10,000 scenarios · Block bootstrap · Correlation v1.2<br>P50: +$15.4k / −18d · P90: +$38.2k / −47d',
+    'MC Report May 2026':'<b>Monte Carlo — May 2026</b><br><br>10,000 scenarios<br>P50: +$12.1k / −14d · P90: +$29.4k / −36d',
+    'Pred Layer June 2026':'<b>Prediction Layer — June 2026</b><br><br>Tariff probability fused: 41% · Brier: 0.09<br>Kalshi 58% · Polymarket 53% · News 54%<br>Recommendation: FX forward USD/CNY',
+    'Pred Layer May 2026':'<b>Prediction Layer — May 2026</b><br><br>Freight probability: 53% · Brier: 0.14<br>Rate decision: 31% · 3 contracts resolved'
+  };
+  function previewReport(name){
+    document.getElementById('modal-title').textContent=name.toUpperCase();
+    document.getElementById('modal-body').innerHTML=rptContent[name]||'Loading…';
+    document.getElementById('rpt-modal').style.display='flex';
+  }
+  function closePreview(){ document.getElementById('rpt-modal').style.display='none'; }
+
+  // ---- alerts management ----
+  const alertDescriptions = {
+    'Runway impact alert':          'Trigger when macro shift removes more than <input type="number" value="14" style="width:40px;background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;"> days from runway',
+    'Monthly cost spike alert':     'Trigger when cost exposure increases more than $<input type="number" value="10000" style="width:80px;background:var(--panel-hi);border:1px solid var(--line-2);color:var(--txt);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;">/month',
+    'Policy event alert':           'Trigger when a tariff, rate, or regulatory event affects my cost basket',
+    'Covenant proximity alert':     'Trigger when distance to covenant breach drops below a threshold',
+    'PCI index spike':              'Trigger when your Personalised Cost Index moves more than a set number of points in a period',
+    'Specific category cost spike': 'Trigger when a single cost category exceeds a set percentage increase',
+    'Signal confidence drop':       'Trigger when prediction layer signal confidence falls below threshold for a tracked category',
+  };
+
+  function removeAlert(id, type){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.remove();
+    // restore to dropdown if it was a named type
+    if(type){
+      activeAlertTypes.delete(type);
+      const sel = document.getElementById('new-alert-type');
+      if(sel){
+        // check if option already exists
+        const exists = Array.from(sel.options).some(o => o.value === type);
+        if(!exists){
+          const opt = document.createElement('option');
+          opt.value = type; opt.textContent = type;
+          sel.appendChild(opt);
+        }
+      }
+    }
+  }
+
+  function addAlert(){
+    const sel = document.getElementById('new-alert-type');
+    const timingEl = document.getElementById('new-alert-timing');
+    const type = sel.value;
+    const timing = timingEl ? timingEl.value : 'DAILY';
+    if(!type) return;
+    if(activeAlertTypes.has(type)){ return; } // already active
+    activeAlertTypes.add(type);
+    const list = document.getElementById('alert-list');
+    const id = 'am-'+Date.now();
+    const row = document.createElement('div');
+    row.className = 'alert-manage-row'; row.id = id;
+    const desc = alertDescriptions[type] || '';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;flex:1;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:14px;font-weight:500;">${type}</div>
+          ${desc ? `<div style="font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:3px;">${desc}</div>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <select style="background:var(--panel-hi);border:1px solid var(--line-2);color:var(--muted);font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:6px;">
+          <option${timing==='HOURLY'?' selected':''}>HOURLY</option>
+          <option${timing==='DAILY'?' selected':''}>DAILY</option>
+          <option${timing==='WEEKLY'?' selected':''}>WEEKLY</option>
+          <option${timing==='MONTHLY'?' selected':''}>MONTHLY</option>
+        </select>
+        <button onclick="removeAlert('${id}','${type}')" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button>
+      </div>`;
+    list.appendChild(row);
+    // remove from dropdown
+    Array.from(sel.options).forEach(o => { if(o.value === type) o.remove(); });
+    sel.value = '';
+  }
+
+  // ---- asset selector ----
+  const assetData={
+    components:{label:'COMPONENTS — STRESS-TEST PROJECTION',pess:'+22.4%',med:'+14.2%',opt:'+6.1%',fused:'+17.8% · 41% conf.',src:'COMPONENTS / HARDWARE'},
+    logistics:{label:'LOGISTICS — STRESS-TEST PROJECTION',pess:'+18.1%',med:'+8.1%',opt:'+2.3%',fused:'+11.2% · 53% conf.',src:'LOGISTICS & FREIGHT'},
+    energy:{label:'ENERGY — STRESS-TEST PROJECTION',pess:'+28.4%',med:'+6.4%',opt:'−2.1%',fused:'+9.8% · 38% conf.',src:'ENERGY & UTILITIES'},
+    talent:{label:'TALENT — SECTOR BASELINE PROJECTION',pess:'+8.2%',med:'+4.1%',opt:'+1.8%',fused:'N/A · no liquid market',src:'TALENT & PAYROLL'}
+  };
+  function selectAsset(key){
+    const d=assetData[key]||assetData.components;
+    document.getElementById('asset-label').textContent=d.label;
+    document.getElementById('asset-pess').textContent=d.pess;
+    document.getElementById('asset-med').textContent=d.med;
+    document.getElementById('asset-opt').textContent=d.opt;
+    document.getElementById('asset-fused').textContent=d.fused;
+    document.getElementById('data-source-asset').textContent=d.src;
+  }
+
+  // ---- connect modal ----
+  function showConnectModal(){ document.getElementById('connect-modal').style.display='flex'; }
+  function closeConnectModal(){ document.getElementById('connect-modal').style.display='none'; }
+
+  // ---- hedge month filter ----
+  function filterHedgeMonth(val){
+    document.querySelectorAll('.hedge-entry').forEach(r=>{
+      r.style.display=(val==='all'||r.dataset.month===val)?'':'none';
+    });
+  }
+
+  // ---- upload ----
+  function handleDashUpload(input){ if(input.files&&input.files[0]) showDashFile(input.files[0]); }
+  function handleDashDrop(e){
+    e.preventDefault(); document.getElementById('dash-dropzone').style.borderColor='var(--line-2)';
+    if(e.dataTransfer.files[0]) showDashFile(e.dataTransfer.files[0]);
+  }
+  function showDashFile(f){
+    const s=document.getElementById('dash-upload-status');
+    s.style.display='block'; s.textContent='✓ '+f.name+' — ready to process';
+  }
+
+  // ---- cost basket mode ----
+  function selectPLMode(el){
+    document.querySelectorAll('[data-plm]').forEach(b=>b.classList.remove('on')); el.classList.add('on');
+  }
+
+  // ---- targeted costs ----
+  function removeTargetCost(btn){ btn.closest('.brow').remove(); }
+  function addTargetCost(){
+    const sel = document.getElementById('new-cost-type').value;
+    const custom = document.getElementById('new-cost-custom').value.trim();
+    const cat = custom || sel;
+    if(!cat){ return; }
+    const list = document.getElementById('targeted-costs');
+    const insertBefore = list.querySelector('[style*="+ ADD COST"]') || list.lastElementChild;
+    const row = document.createElement('div');
+    row.className = 'brow';
+    row.style.cssText = 'padding:14px 22px;border-bottom:1px solid var(--line);';
+    row.innerHTML = `<span class="name">${cat}<span class="baseline-tag">ACTIVE</span></span><div class="track-bar"><i style="width:10%;background:var(--blue)"></i></div><div style="display:flex;align-items:center;gap:10px;"><div class="vals">—</div><button onclick="removeTargetCost(this)" style="background:none;border:1px solid var(--line-2);color:var(--faint);padding:3px 8px;border-radius:5px;cursor:pointer;font-family:var(--mono);font-size:10px;">Remove</button></div>`;
+    list.insertBefore(row, insertBefore.previousElementSibling);
+    document.getElementById('new-cost-type').value = '';
+    document.getElementById('new-cost-custom').value = '';
+  }
+
+  function selectInvHorizon(el, period){
+    document.querySelectorAll('#inv-horizon button').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+    // month = show only current month entries, quarter = last 3 months, all = everything
+    const now = '2026-05';
+    const quarterMonths = ['2026-03','2026-04','2026-05'];
+    document.querySelectorAll('.hedge-entry').forEach(r=>{
+      const m = r.dataset.month;
+      let show = false;
+      if(period==='all') show=true;
+      else if(period==='month') show=(m===now);
+      else if(period==='quarter') show=quarterMonths.includes(m);
+      r.style.display = show ? '' : 'none';
+    });
+  }
+
+  function exportInvestmentReport(){ alert('Generating investment summary report…'); }
+
+
+  // ---- period scaling ----
+  const mult={week:1/4.33,month:1,quarter:3};
+  const punitShort={week:'this week',month:'this month',quarter:'this quarter'};
+  const velUnitLab={week:'wk',month:'mo',quarter:'qtr'};
+  const prevLab={week:'last week',month:'last month',quarter:'last quarter'};
+  const dlab={week:'vs last week',month:'vs last month',quarter:'vs last quarter'};
+  const pciLab={week:'WEEK',month:'MONTH',quarter:'QUARTER'};
+
+  const M={costM:15.4,comp:9.2,log:4.1,ener:2.1,
+    runDaysBase:-18,runDaysTilt:-22,
+    velM:0.8,velPrevM:0.5,velCompM:0.5,velLogM:0.2,velEnerM:0.1};
+
+  const runwayData = {
+    week:   {current:'−4 days this week',prev:'−3 days last week',delta:'1 day worse than last week'},
+    month:  {current:'−18 days this month',prev:'−15 days last month',delta:'3 days worse than last month'},
+    quarter:{current:'−54 days this quarter',prev:'−45 days last quarter',delta:'9 days worse than last quarter'}
+  };
+  const basketPcts = {
+    week:   {talent:'+1.0%',components:'+3.3%',logistics:'+1.9%',compute:'−0.2%',energy:'+1.5%',facilities:'+0.5%'},
+    month:  {talent:'+4.1%',components:'+14.2%',logistics:'+8.1%',compute:'−0.8%',energy:'+6.4%',facilities:'+2.1%'},
+    quarter:{talent:'+12.4%',components:'+43.2%',logistics:'+24.6%',compute:'−2.4%',energy:'+19.4%',facilities:'+6.4%'}
+  };
+
+  function selectBasketHorizon(el, period){
+    document.querySelectorAll('#basket-horizon button').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+    const d = basketPcts[period] || basketPcts.month;
+    Object.entries(d).forEach(([cat,val])=>{
+      const el2 = document.getElementById('bpct-'+cat);
+      if(!el2) return;
+      el2.textContent = val;
+      el2.className = 'pct ' + (val.startsWith('+') ? 'up' : 'dn');
+    });
+  }
+  let horizon='month',tilt=false;
+  const f=n=> n<1 ? '+$'+(Math.round(n*1000))+'': n>=100?'$'+Math.round(n)+'k':'$'+(Math.round(n*10)/10)+'k';
+  const fv=n=> Math.round(n*100)/100;
+
+  function indexColor(delta) {
+    // delta = pts change vs prev period
+    if (delta > 1.0)  return 'var(--red)';   // bad — costs rising fast
+    if (delta > 0.3)  return 'var(--amber)'; // neutral — small move
+    return 'var(--green)';                    // good — stable or falling
+  }
+  function costColor(amount) {
+    // amount = monthly cost increase in $k
+    if (amount > 10) return 'var(--red)';
+    if (amount > 3)  return 'var(--amber)';
+    return 'var(--green)';
+  }
+  const colorMap = {'var(--red)':'rgba(200,53,26,0.1)','var(--amber)':'rgba(184,122,0,0.1)','var(--green)':'rgba(21,128,61,0.1)'};
+  function applyIndexColors(deltapts, costK) {
+    const ic = indexColor(deltapts);
+    const cc = costColor(costK);
+    // PCI — big number stays black, only delta pill carries color
+    const pciEl    = document.querySelector('.pii-level');
+    const pciDolEl = document.querySelector('.pii-dollar');
+    const pciDelta = document.querySelector('#kpi-pci .delta');
+    if(pciEl)    pciEl.style.color = 'var(--txt)';
+    if(pciDolEl) pciDolEl.style.color = 'var(--txt)';
+    if(pciDelta){ pciDelta.style.color=ic; pciDelta.style.background=colorMap[ic]||''; }
+    // Cost increase — big number stays black, only delta pill carries color
+    const costBig  = document.querySelector('#kpi-cost .big');
+    const cpill    = document.getElementById('costDeltaPill');
+    if(costBig) costBig.style.color = 'var(--txt)';
+    if(cpill){ cpill.style.color=cc; cpill.style.background=colorMap[cc]||''; }
+    // Box accent (left inset border) still reflects the signal
+    const kpiPci  = document.getElementById('kpi-pci');
+    const kpiCost = document.getElementById('kpi-cost');
+    if(kpiPci)  kpiPci.style.boxShadow  = `0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.06),inset 3px 0 0 ${ic}`;
+    if(kpiCost) kpiCost.style.boxShadow = `0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.06),inset 3px 0 0 ${cc}`;
+  }
+
+  function render(){
+    const m=mult[horizon];
+    // Monthly cost increase (3rd KPI)
+    const cost = M.costM*m;
+    document.getElementById('costMain').textContent = cost < 1 ? (Math.round(cost*1000)) : (Math.round(cost*10)/10)+'k';
+    document.getElementById('costPeriodLab').textContent = 'above baseline ' + punitShort[horizon];
+    document.getElementById('cost-prev-period').textContent = prevLab[horizon];
+    document.getElementById('costBreak').textContent = `components +$${fv(M.comp*m)}k · logistics +$${fv(M.log*m)}k · energy +$${fv(M.ener*m)}k`;
+
+    // PCI delta vs prev period
+    document.getElementById('pci-period-lab').textContent = pciLab[horizon];
+    document.getElementById('pci-delta-pts').textContent = fv(M.velM*m);
+    document.getElementById('costDelta').textContent = dlab[horizon];
+
+    // PCI index stats
+    document.getElementById('velMain2').textContent = fv(M.velM*m);
+    document.getElementById('velUnit2').textContent = velUnitLab[horizon];
+    document.getElementById('velPrev2').textContent = fv(M.velPrevM*m);
+    const accel = M.velM > M.velPrevM;
+    document.getElementById('vel-accel-txt').textContent = accel ? 'accelerating' : 'decelerating';
+
+    // Runway — stacked lines, tilt-aware
+    const rd = runwayData[horizon] || runwayData.month;
+    const days = tilt ? M.runDaysTilt : M.runDaysBase;
+    const tiltSuffix = tilt ? ' (fwd signal)' : '';
+    document.getElementById('runwayMonths').textContent = (14.2 + days/30).toFixed(1);
+    const cur = document.getElementById('runway-current');
+    const prev = document.getElementById('runway-vs-prev');
+    if(cur) cur.innerHTML = `<b>${rd.current}${tiltSuffix}</b>`;
+    if(prev) prev.textContent = rd.prev;
+    const dtxt = document.getElementById('runway-delta-txt');
+    if(dtxt) dtxt.textContent = rd.delta + tiltSuffix;
+    applyIndexColors(M.velM * m, M.costM * m);
+  }
+
+  document.getElementById('horizon').addEventListener('click',e=>{
+    if(!e.target.dataset.h)return;
+    horizon=e.target.dataset.h;
+    document.querySelectorAll('#horizon button').forEach(b=>b.classList.toggle('on',b.dataset.h===horizon));
+    render();
+  });
+  document.getElementById('tiltToggle').addEventListener('change',e=>{
+    tilt=e.target.checked;
+    document.getElementById('tiltNote').classList.toggle('show',tilt);
+    render();
+  });
+
+  // ---- info popover: click to pin (mobile) ----
+  document.querySelectorAll('.info').forEach(i=>{
+    i.addEventListener('click',e=>{e.stopPropagation();
+      document.querySelectorAll('.info').forEach(o=>{if(o!==i)o.classList.remove('pin')});
+      i.classList.toggle('pin');});
+  });
+  document.addEventListener('click',()=>document.querySelectorAll('.info').forEach(o=>o.classList.remove('pin')));
+
+  render();
+</script>
+</body>
+</html>
