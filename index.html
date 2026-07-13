@@ -289,7 +289,12 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   .footer-bottom{flex-direction:column;gap:14px;}
   .careers-positions{margin-top:24px;}
   .career-row{padding:14px 18px;flex-wrap:wrap;gap:4px;}
-}
+}.collapsible-header{cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;user-select:none;width:100%;}
+.collapsible-chevron{width:80px;height:80px;flex-shrink:0;margin-top:8px;transition:transform .3s ease;color:var(--red);stroke-width:3.5;}
+.collapsible-header.open .collapsible-chevron{transform:rotate(180deg);}
+.collapsible-header:hover .collapsible-chevron{color:#b91c1c;}
+.collapsible-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .55s ease,opacity .4s ease;}
+.collapsible-body.open{max-height:4000px;opacity:1;}
 </style>
 </head>
 <body>
@@ -410,24 +415,31 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 <!-- DUAL TRACK -->
 <section id="dual-track">
   <div class="section-inner">
-    <p class="section-eyebrow">Dual-track analysis</p>
-    <h2 class="section-headline">Keep the math clean.<br>Use LLMs only where they belong.</h2>
+    <div class="collapsible-header" id="dual-track-body-header" onclick="toggleCollapse('dual-track-body')">
+      <div>
+        <p class="section-eyebrow">Dual-track analysis</p>
+        <h2 class="section-headline">Keep the math clean.<br>Use LLMs only where they belong.</h2>
+      </div>
+      <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-body" id="dual-track-body">
     <p class="section-sub">Two tracks run in parallel and never write to the same ledger. One is auditable mathematical fact. The other is AI-powered prediction of future market moves.</p>
     <div class="dual-grid">
       <div class="dual-card">
         <span class="track-badge">Track 1 / Audit</span>
         <h3 class="track-title">Deterministic ledger</h3>
-        <p class="track-body">Built on the actual transaction data, imported macro weather, and standard stress-testing instruments. Produces PII, Monte Carlo runway scenarios, and projected cost increases for the next reporting period - all computed and stored locally. Every output traces to a formula. The LLM does not touch this track.</p>
+        <p class="track-body">Built on the actual transaction data, imported macro weather, and standard stress-testing instruments. Every output traces to a formula. The LLM does not touch this track.</p>
         <div class="track-line solid"></div>
         <p style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;letter-spacing:0.12em;">SOLID LINE — MATHEMATICAL TRUTH · AUDITABLE</p>
       </div>
       <div class="dual-card" style="border-left:1px solid var(--border);">
         <span class="track-badge">Track 2 / AI Signal Layer</span>
         <h3 class="track-title">Alternative signal layer</h3>
-        <p class="track-body">Within this layer, AI ingests alternative outcome signals to sharpen scenario probabilities. It focuses on thinner, proprietary data markets where genuine edge exists. It does not currently modify the deterministic ledger. Future: it feeds Monte Carlo confidence intervals directly.</p>
+        <p class="track-body">Within this layer, AI processes alternative outcome signals to sharpen scenario probabilities. It does not currently modify the deterministic ledger. Future: it feeds Monte Carlo confidence intervals directly.</p>
         <div class="track-line dashed"></div>
         <p style="font-family:var(--mono);font-size:9px;color:rgba(220,38,38,0.65);margin-top:8px;letter-spacing:0.12em;">DASHED LINE — PREDICTIVE ESTIMATE · IN TESTING</p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -468,10 +480,10 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       <div class="arch-layer" style="border-left:1px solid var(--border);">
         <div class="layer-tag"><span class="layer-dot" style="background:var(--purple)"></span>LAYER 2 — LLM NARRATIVE / HARDENED OUTBOUND</div>
         <h3 class="layer-title">Local inference <span class="layer-slash">/</span> four privacy controls</h3>
-        <p class="layer-body">Receives only bucketed risk vectors from Layer 0 — no raw data, no covenant terms. Mistral Large 3 runs locally on the client device, generating plain-language narrative and hedge guidance. On Pro/Enterprise, Claude API with ZDR handles advanced reasoning. Customer financial data never leaves the device at any point.</p>
+        <p class="layer-body">Receives only bucketed risk vectors from Layer 0 — no raw data, no covenant terms. Mistral Large 3 runs locally on the client device, generating plain-language narrative and hedge guidance. On Pro/Enterprise, the external frontier model API with ZDR handles advanced reasoning. Customer financial data never leaves the device at any point.</p>
         <div class="stack-list">
           <div class="stack-item purple">Mistral Large 3 · local · Base tier</div>
-          <div class="stack-item purple">Claude API · ZDR · Pro / Enterprise tier</div>
+          <div class="stack-item purple">External Frontier model API · ZDR · Pro / Enterprise tier</div>
           <div class="stack-item">Control 1: vector bucketing (5% rounding)</div>
           <div class="stack-item">Control 2: Zero Data Retention agreement</div>
           <div class="stack-item">Control 3: no covenant terms transmitted</div>
@@ -481,8 +493,8 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 
       <div class="arch-layer" style="border-top:1px solid var(--border);">
         <div class="layer-tag"><span class="layer-dot" style="background:var(--amber)"></span>LAYER 3 — ALTERNATIVE SIGNAL LAYER / RESEARCH PHASE</div>
-        <h3 class="layer-title">Forward view <span class="layer-slash">/</span> Claude gathers · Mistral applies</h3>
-        <p class="layer-body">Claude API ingests public alternative signals — Kalshi, Polymarket, freight indices — and produces a calibrated probability vector. No customer data touches Claude. That vector is passed to local Mistral, which maps it against the client's cost basket. Customer data stays on-device throughout.</p>
+        <h3 class="layer-title">Forward view <span class="layer-slash">/</span> External model gathers · local LLM applies</h3>
+        <p class="layer-body">The external frontier model ingests public alternative signals — Kalshi, Polymarket, freight indices — and produces a calibrated probability vector. No customer data touches the external model. That vector is passed to local Mistral, which maps it against the client's cost basket. Customer data stays on-device throughout.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:14px;">
           <div style="background:var(--bg3);padding:14px;">
             <div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:0.16em;margin-bottom:8px;">CLAUDE — PUBLIC SIGNALS ONLY</div>
@@ -539,8 +551,14 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 <!-- EMPOWERMENT TOOL -->
 <section id="about">
   <div class="section-inner">
-    <p class="section-eyebrow">Financial empowerment tool</p>
-    <h2 class="section-headline">Macro risk infrastructure<br>built for operators, not banks.</h2>
+    <div class="collapsible-header" id="about-body-header" onclick="toggleCollapse('about-body')">
+      <div>
+        <p class="section-eyebrow">Financial empowerment tool</p>
+        <h2 class="section-headline">Macro risk infrastructure<br>built for operators, not banks.</h2>
+      </div>
+      <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-body" id="about-body">
     <p class="section-sub">For finance teams at Series A/B companies and enterprises with real input cost exposure to macro moves.</p>
     <div class="gaps-grid">
       <div class="gap-card">
@@ -563,14 +581,21 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
         <p class="gap-body">Sensitive financial cost data cannot safely go into public AI systems. Your data stays on your device.</p>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
 <!-- PRIVACY -->
 <section id="privacy">
   <div class="section-inner">
-    <p class="section-eyebrow">Privacy &amp; Safety</p>
-    <h2 class="section-headline">Privacy is not a claim.<br>It is a set of specific technical decisions.</h2>
+    <div class="collapsible-header" id="privacy-body-header" onclick="toggleCollapse('privacy-body')">
+      <div>
+        <p class="section-eyebrow">Privacy &amp; Safety</p>
+        <h2 class="section-headline">Privacy is not a claim.<br>It is a set of specific technical decisions.</h2>
+      </div>
+      <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-body" id="privacy-body">
     <p class="section-sub"></p>
     <div class="privacy-grid" style="grid-template-columns:1fr 1fr;">
       <div class="privacy-card">
@@ -587,14 +612,15 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
     <div style="background:var(--bg2);border:1px solid var(--border);border-top:none;padding:26px;display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;">
       <div style="flex:1;min-width:240px;">
         <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">AI MODEL ARCHITECTURE — ZERO DATA RETENTION</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Claude ZDR · signal layer only · one-way to device</div>
-        <p style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;">Any cloud inference operates under ZDR agreements — data only comes in and not out — not stored or used for training. Claude handles the predictive signal layer, processing only public market data and passing a probability vector one-way to the local model. All cost basket mapping and narrative generation runs locally on your device.</p>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px;">External Frontier model ZDR · signal layer only · one-way to device</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;">Any cloud inference operates under ZDR agreements — data only comes in and not out — not stored or used for training. An external frontier model handles the predictive signal layer, processing only public market data and passing a probability vector one-way to the local model. All cost basket mapping and narrative generation runs on a captive, on-device LLM — fully local, with no external trace or data transfer.</p>
       </div>
       <div style="flex:1;min-width:240px;">
         <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.18em;margin-bottom:8px;">SECURITY VERIFICATION</div>
         <div style="font-size:13px;font-weight:500;margin-bottom:4px;">Independent security audit</div>
         <p style="font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;">Third-party security services verify that no sensitive data can egress the local environment — auditing all LLM-assisted code paths and API boundaries for potential data-leaking vulnerabilities before deployment.</p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -633,8 +659,14 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 <!-- PARTNERS -->
 <section id="partners" style="border-top:none;padding-top:72px;">
   <div class="section-inner">
-    <p class="section-eyebrow">Execution platforms</p>
-    <h2 class="section-headline">Where your hedge options live.</h2>
+    <div class="collapsible-header" id="partners-body-header" onclick="toggleCollapse('partners-body')">
+      <div>
+        <p class="section-eyebrow">Execution platforms</p>
+        <h2 class="section-headline">Where your hedge options live.</h2>
+      </div>
+      <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-body" id="partners-body">
     <p class="section-sub"></p>
     <div class="partners-grid">
       <div class="partners-col">
@@ -674,14 +706,21 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
         </div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
 <!-- PRICING -->
 <section id="pricing">
   <div class="section-inner">
-    <p class="section-eyebrow">Available tiers</p>
-    <h2 class="section-headline">Two billable layers:<br>platform plus metered reports.</h2>
+    <div class="collapsible-header" id="pricing-body-header" onclick="toggleCollapse('pricing-body')">
+      <div>
+        <p class="section-eyebrow">Available tiers</p>
+        <h2 class="section-headline">Two billable layers:<br>platform plus metered reports.</h2>
+      </div>
+      <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-body" id="pricing-body">
     <div class="pricing-grid" style="grid-template-columns:1fr 1fr;">
       <div class="pricing-card">
         <div class="pricing-tier">Base</div>
@@ -712,6 +751,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       </div>
     </div>
     <p style="margin-top:14px;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.09em;">Report overages · $2.50–$4.00/report · Mistral Large 3 local inference · $0.00 on-device</p>
+    </div>
   </div>
 </section>
 
@@ -724,7 +764,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       <p class="section-sub" style="margin-top:14px;">Støtte is a small team working on a hard problem at the intersection of quantitative finance, local-first architecture, and leveraging AI at its full scale. If that sounds like the right place for you to grow, we want to hear from you.</p>
     </div>
     <div class="careers-positions">
-      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.14em;padding:10px 20px;background:var(--bg2);border-bottom:1px solid var(--border);">Roles opening after Series Seed</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.14em;padding:10px 20px;background:var(--bg2);border-bottom:1px solid var(--border);">Roles opening shortly</div>
       <div class="career-row"><span class="career-title">Quantitative engineer</span><span class="career-loc">San Francisco · Full-time</span></div>
       <div class="career-row"><span class="career-title">AI / ML engineer</span><span class="career-loc">San Francisco · Full-time</span></div>
       <div class="career-row"><span class="career-title">Account executive</span><span class="career-loc">San Francisco · Full-time</span></div>
@@ -931,6 +971,17 @@ setInterval(()=>{
   },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
   targets.forEach(el=>io.observe(el));
 })();
+
+function toggleCollapse(id){
+  const body=document.getElementById(id);
+  const header=document.getElementById(id+'-header');
+  if(!body||!header) return;
+  body.classList.toggle('open');
+  header.classList.toggle('open');
+  if(body.classList.contains('open')){
+    body.querySelectorAll('.reveal').forEach(el=>el.classList.add('is-visible'));
+  }
+}
 
 function selectLLM(el,model){
   document.querySelectorAll('.llm-card').forEach(c=>{c.classList.remove('active');c.style.borderLeftColor='transparent';});
