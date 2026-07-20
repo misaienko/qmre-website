@@ -6,7 +6,7 @@
 <title>Støtte</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:#fefefe; --bg2:#ffffff; --bg3:#f6f6f5;
@@ -14,7 +14,7 @@
   --text:#15151a; --text2:rgba(21,21,26,0.6); --text3:rgba(21,21,26,0.38);
   --accent:#14141a; --accent2:#33333d;
   --green:#16a34a; --red:#dc2626; --amber:#d97706; --purple:#7c3aed;
-  --mono:'DM Mono',monospace; --serif:'DM Serif Display',serif; --sans:'Manrope',sans-serif;
+  --mono:'DM Mono',monospace; --serif:'Archivo',sans-serif; --sans:'Manrope',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -60,7 +60,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(254,254,254,
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 72% 50%,rgba(37,99,255,0.05) 0%,transparent 70%);pointer-events:none;}
 .hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 400px;gap:80px;align-items:center;}
 .hero-eyebrow{font-family:var(--mono);font-size:7px;letter-spacing:0.22em;color:var(--text3);text-transform:uppercase;margin-bottom:20px;}
-.hero-headline{font-family:var(--serif);font-size:clamp(44px,5.4vw,72px);line-height:1.08;font-weight:700;margin-bottom:26px;}
+.hero-headline{font-family:var(--serif);font-size:clamp(31px,3.8vw,50px);line-height:1.1;font-weight:700;margin-bottom:26px;}
 .hero-headline-sub{font-family:var(--serif);font-size:clamp(17px,1.8vw,22px);color:var(--text2);font-style:italic;font-weight:400;margin-bottom:28px;line-height:1.3;}
 .hero-body{font-size:14px;color:var(--text2);line-height:1.75;max-width:420px;}
 
@@ -101,8 +101,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(254,254,254,
 /* SECTION */
 section{padding:96px 32px;border-top:1px solid var(--border);}
 .section-inner{max-width:1200px;margin:0 auto;}
-.section-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;color:var(--text3);text-transform:uppercase;margin-bottom:16px;}
-.section-headline{font-family:var(--serif);font-size:clamp(30px,3.2vw,50px);line-height:1.12;font-weight:700;margin-bottom:16px;}
+.section-eyebrow{font-family:var(--mono);font-size:7.2px;letter-spacing:0.22em;color:var(--text3);text-transform:uppercase;margin-bottom:16px;}
+.section-headline{font-family:var(--serif);font-size:clamp(31px,3.8vw,50px);line-height:1.12;font-weight:700;margin-bottom:16px;}
 .section-sub{font-size:14px;color:var(--text2);line-height:1.75;max-width:520px;}
 
 /* DUAL TRACK */
@@ -222,7 +222,7 @@ canvas#narrativeChart{width:100%!important;flex:1;}
 
 /* CTA */
 .cta-section{padding:120px 32px;text-align:center;border-top:1px solid var(--border);}
-.cta-headline{font-family:var(--serif);font-size:clamp(32px,3.8vw,54px);line-height:1.12;font-weight:700;margin-bottom:20px;max-width:640px;margin-left:auto;margin-right:auto;}
+.cta-headline{font-family:var(--serif);font-size:clamp(31px,3.8vw,50px);line-height:1.15;font-weight:700;margin-bottom:20px;max-width:640px;margin-left:auto;margin-right:auto;}
 .cta-sub{font-size:14px;color:var(--text2);margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.75;}
 .btn-cta{display:inline-block;background:var(--accent);color:#fff;padding:13px 32px;border-radius:3px;font-size:13px;font-weight:500;letter-spacing:0.04em;transition:background .2s;cursor:pointer;border:none;}
 .btn-cta:hover{background:var(--accent2);}
@@ -281,7 +281,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
   section{padding:64px 20px;}
   .cta-section{padding:72px 20px;}
   .hero{padding:96px 18px 48px;}
-  .hero-headline{font-size:clamp(32px,8.5vw,42px);margin-bottom:18px;}
+  .hero-headline{font-size:clamp(22px,6vw,29px);margin-bottom:18px;}
   .dash-panel{max-width:100%;}
   .dash-stat-row{grid-template-columns:1fr;}
   .dual-card,.arch-layer{padding:24px 20px;}
@@ -294,7 +294,8 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 .collapsible-header.open .collapsible-chevron{transform:rotate(180deg);}
 .collapsible-header:hover .collapsible-chevron{color:#b91c1c;}
 .collapsible-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .55s ease,opacity .4s ease;}
-.collapsible-body.open{max-height:4000px;opacity:1;}
+.collapsible-body.open{max-height:4000px;opacity:1;}.typing-cursor::after{content:'|';color:var(--red);animation:caretBlink .9s step-end infinite;margin-left:2px;}
+@keyframes caretBlink{0%,100%{opacity:1;}50%{opacity:0;}}
 </style>
 </head>
 <body>
@@ -358,10 +359,9 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
 <section class="hero" style="border-top:none;">
   <div class="hero-inner">
     <div>
-      <p class="hero-eyebrow">On-device math engine / AI-powered forward view</p>
-      <h1 class="hero-headline">Stay resilient against whatever the world throws at you.</h1>
+      <h1 class="hero-headline" id="hero-headline-typed"></h1>
       <p class="hero-body">
-        This tool builds a Personalised Inflation Index from your actual cost basket, stress-tests macro shocks against your real burn rate, and surfaces concrete hedging options to stabilize your cost exposure. Using AI to capture market signals, we help you act long before a risk hits your runway.
+        This tool builds a Cost Exposure Index from your actual cost basket, stress-tests macro shocks against your real burn rate, and surfaces concrete hedging options to stabilize your cost exposure. Using AI to capture market signals, we help you act long before a risk hits your runway.
       </p>
     </div>
     <div class="dash-panel">
@@ -389,10 +389,10 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
         </div>
         <div class="dash-card wide" style="margin-bottom:8px;">
           <div class="dash-card-top">
-            <span class="dash-card-label">Personalised Inflation Index (PII)</span>
+            <span class="dash-card-label">Cost Exposure Index (CEI)</span>
           </div>
-          <div class="dash-card-value" id="dash-pii">110.1</div>
-          <div class="dash-card-sub">your costs are <b style="color:var(--text2)" id="dash-pii-pct">+10.1%</b> above your own baseline · sector avg 107.9</div>
+          <div class="dash-card-value" id="dash-cei">110.1</div>
+          <div class="dash-card-sub">your costs are <b style="color:var(--text2)" id="dash-cei-pct">+10.1%</b> above your own baseline · sector avg 107.9</div>
         </div>
         <div class="dash-coverage">
           <b>Monitoring 100%</b> of your tracked cost base across 8 categories. <span class="flag">1 flagged to hedge</span> — freight &amp; transportation.
@@ -460,11 +460,11 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
           </div>
           <div style="background:var(--bg3);padding:16px;border-left:1px solid var(--border);">
             <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.14em;margin-bottom:8px;">MATH ENGINE</div>
-            <div class="stack-list"><div class="stack-item hi">Python/C++ · deterministic</div><div class="stack-item">PII factor weighting</div><div class="stack-item">Monte Carlo simulator</div><div class="stack-item">Covenant ratio calc</div></div>
+            <div class="stack-list"><div class="stack-item hi">Python/C++ · deterministic</div><div class="stack-item">CEI factor weighting</div><div class="stack-item">Monte Carlo simulator</div><div class="stack-item">Covenant ratio calc</div></div>
           </div>
           <div style="background:var(--bg3);padding:16px;border-left:1px solid var(--border);">
             <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.14em;margin-bottom:8px;">LOCAL API</div>
-            <div class="stack-list"><div class="stack-item hi">FastAPI · local only</div><div class="stack-item">/pii/build</div><div class="stack-item">/stress-test</div><div class="stack-item">/covenant/status</div><div class="stack-item">/narrative/generate</div><div class="stack-item">/weather/latest</div></div>
+            <div class="stack-list"><div class="stack-item hi">FastAPI · local only</div><div class="stack-item">/cei/build</div><div class="stack-item">/stress-test</div><div class="stack-item">/covenant/status</div><div class="stack-item">/narrative/generate</div><div class="stack-item">/weather/latest</div></div>
           </div>
         </div>
         <div class="arch-flow">Privacy boundary ↓ — only bucketed risk vectors and narrative cross below · no transaction data · no covenant terms transmitted</div>
@@ -574,7 +574,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
       </div>
       <div class="gap-card" style="border-top:1px solid var(--border);">
         <div class="gap-title">Precision gap</div>
-        <p class="gap-body">Generic CPI benchmarks don't reflect your actual cost basket. Your prebuilt Personalised Inflation Index (PII) allows a materially more precise hedge.</p>
+        <p class="gap-body">Generic CPI benchmarks don't reflect your actual cost basket. Your prebuilt Cost Exposure Index (CEI) allows a materially more precise hedge.</p>
       </div>
       <div class="gap-card" style="border-top:1px solid var(--border);">
         <div class="gap-title">Sovereignty gap</div>
@@ -793,7 +793,7 @@ footer{border-top:1px solid var(--border);padding:52px 32px 34px;}
         <div class="footer-col-links">
           <a href="#careers" onclick="highlightCareers()">Careers</a>
           <a href="#" onclick="openPage('newsroomPage');return false;">Newsroom</a>
-          <a href="mailto:qmre.quant@gmail.com">Contact us: qmre.quant@gmail.com</a>
+          <a href="mailto:stotte.engine@gmail.com">Contact us: stotte.engine@gmail.com</a>
         </div>
       </div>
       <div>
@@ -857,23 +857,23 @@ function highlightCareers(){
 }
 
 // ── DASHBOARD PREVIEW TICKER ──
-let piiBase=110.1;
+let ceiBase=110.1;
 let costBase=512;
 let runwayWeeks=1;
 let tickT=0;
 setInterval(()=>{
   tickT+=1;
-  piiBase+=(Math.random()-.5)*.3;
-  piiBase=Math.min(118,Math.max(105,piiBase));
+  ceiBase+=(Math.random()-.5)*.3;
+  ceiBase=Math.min(118,Math.max(105,ceiBase));
   costBase+=(Math.random()-.5)*30;
   costBase=Math.min(640,Math.max(500,costBase));
   runwayWeeks=6+5*Math.sin(tickT/4)+(Math.random()-.5)*1.2;
   runwayWeeks=Math.min(13,Math.max(0,runwayWeeks));
   const runwayMonths=Math.floor(runwayWeeks/4);
   const runwayRemWeeks=Math.floor(runwayWeeks%4);
-  const pctAbove=(piiBase-100).toFixed(1);
-  const pii=document.getElementById('dash-pii'); if(pii) pii.textContent=piiBase.toFixed(1);
-  const pct=document.getElementById('dash-pii-pct'); if(pct) pct.textContent='+'+pctAbove+'%';
+  const pctAbove=(ceiBase-100).toFixed(1);
+  const cei=document.getElementById('dash-cei'); if(cei) cei.textContent=ceiBase.toFixed(1);
+  const pct=document.getElementById('dash-cei-pct'); if(pct) pct.textContent='+'+pctAbove+'%';
   const cost=document.getElementById('dash-cost'); if(cost) cost.textContent='+$'+Math.round(costBase);
   const runway=document.getElementById('dash-runway'); if(runway) runway.textContent=runwayMonths+'.'+runwayRemWeeks;
 },2000);
@@ -955,6 +955,38 @@ setInterval(()=>{
     document.getElementById('oil-delta').textContent='↑ Cost exposure probability '+totalProj.toFixed(1)+'% · Q3 2026';
     oilChart.update('none');
   },1800);
+})();
+
+// ── HERO HEADLINE TYPEWRITER ──
+(function(){
+  const el=document.getElementById('hero-headline-typed');
+  if(!el) return;
+  const lines=["Stay resilient against","whatever the world","throws at you."];
+  let lineIdx=0, charIdx=0;
+  el.classList.add('typing-cursor');
+  function render(){
+    let html='';
+    for(let l=0;l<lineIdx;l++){ html+=lines[l]+'<br>'; }
+    html+=lines[lineIdx].slice(0,charIdx);
+    el.innerHTML=html;
+  }
+  function typeChar(){
+    if(lineIdx>=lines.length){
+      el.classList.remove('typing-cursor');
+      let finalHtml=lines.join('<br>').replace('resilient','<span style="color:var(--red);">resilient</span>');
+      el.innerHTML=finalHtml;
+      return;
+    }
+    if(charIdx<=lines[lineIdx].length){
+      render();
+      charIdx++;
+      setTimeout(typeChar,64);
+    } else {
+      lineIdx++; charIdx=0;
+      setTimeout(typeChar,64);
+    }
+  }
+  typeChar();
 })();
 
 // ── SCROLL REVEAL ──
